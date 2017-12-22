@@ -1,0 +1,23 @@
+{
+	"name": "emailplatform/api_parser",
+	"type": "library",
+	"description": "PHP class for using our company API as part of the subscription",
+	"keywords": [
+		"API",
+		"library"
+	],
+	"homepage": "https://github.com/emailplatform/ApiParser_v_1.0",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Toni Mladenovski",
+			"email": "tonim@emailplatform.com",
+			"homepage": "https://emailplatform.com",
+			"role": "Developer"
+		}
+	],
+	"require": {
+		"php": ">=5.6.0",
+		"curl": ">=7.0.0"
+	}
+}
