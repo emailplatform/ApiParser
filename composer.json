@@ -1,5 +1,5 @@
 {
-	"name": "emailplatform/api_parser_v1.0",
+	"name": "emailplatform/api_parser",
 	"type": "library",
 	"description": "PHP class for using our company API as part of the subscription",
 	"keywords": [
@@ -19,6 +19,6 @@
 	"minimum-stability": "stable",
 	"require": {
 		"php": ">=5.6.0",
-		"curl": ">=7.0.0"
+		"php-curl": ">=6.0"
 	}
 }
