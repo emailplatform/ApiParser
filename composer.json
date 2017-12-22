@@ -1,5 +1,5 @@
 {
-	"name": "emailplatform/api_parser",
+	"name": "emailplatform/api_parser_v1.0",
 	"type": "library",
 	"description": "PHP class for using our company API as part of the subscription",
 	"keywords": [
