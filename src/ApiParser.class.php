@@ -6,17 +6,6 @@ class ApiParser
 	const REQUEST_FAILED = 'Unsuccessful request';
 
 	var $settings = array ();
-	
-	/** Localhost **/
-// 	var $URL = 'http://localhost/public_api';
-	
-	/** Dev **/
-// 	var $URL = 'https://api-dev.mailmailmail.net/development/';
-	
-	/** Bugs **/
-// 	var $URL = 'https://api-dev.mailmailmail.net/debuging';
-	
-	/** Production **/
 	var $URL = 'https://api.mailmailmail.net/v1.1';
 	
 	public function __construct ($settings = array())
