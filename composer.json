@@ -6,7 +6,7 @@
 		"API",
 		"library"
 	],
-	"homepage": "https://github.com/emailplatform/ApiParser_v_1.0",
+	"homepage": "https://github.com/emailplatform/ApiParser",
 	"license": "MIT",
 	"minimum-stability": "dev",
 	"prefer-stable": true,
@@ -19,6 +19,10 @@
 		}
 	],
 	"require": {
-		"php": ">=5.6.0"
-	}
+		"php": ">=5.6.0",
+		 "emailplatform/api_parser": "1.1.*"
+	},
+	"autoload": {
+        	"psr-4": {"Acme\\": "src/"}
+    	}
 }
