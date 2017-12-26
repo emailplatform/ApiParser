@@ -1,5 +1,5 @@
 # ApiParser
-PHP class for using our company API as part of the subscription.
+PHP class for using our company's API as part of the subscription.
 <hr><br/>
 
 ## Installation
@@ -32,7 +32,7 @@ require 'vendor/emailplatform/api_parser/src/ApiParser.class.php';
 #### Method definition changed:
 
 * **UnsubscribeSubscriberEmail**
->  *Prevous:*
+>  *Previous:*
 > ```php
 > public function UnsubscribeSubscriberEmail ($emailaddress = false, $listid = false, $subscriberid = false, $skipcheck = false, $statid = false)
 >```
@@ -44,7 +44,7 @@ require 'vendor/emailplatform/api_parser/src/ApiParser.class.php';
 <br />
 
 * **UnsubscribeSubscriberMobile**
->  *Prevous:*
+>  *Previous:*
 > ```php
 > public function UnsubscribeSubscriberMobile ($mobile = false, $mobilePrefix = false, $listid = false, $subscriberid = false, $skipcheck = false, $statid = false)
 >```
@@ -57,7 +57,7 @@ require 'vendor/emailplatform/api_parser/src/ApiParser.class.php';
 <br />
 
 * **GetSubscriberDetails**
->  *Prevous:*
+>  *Previous:*
 > ```php
 > public function GetSubscriberDetails($emailaddress = false, $listid = false)
 > 
@@ -73,7 +73,7 @@ require 'vendor/emailplatform/api_parser/src/ApiParser.class.php';
 
 
 * **GetRecipients**
->  *Prevous:*
+>  *Previous:*
 > ```php
 > public function GetRecipients($statid = false, $stats_type = false, $count_only = false)
 > 
@@ -88,7 +88,7 @@ require 'vendor/emailplatform/api_parser/src/ApiParser.class.php';
 <br />
 
 * **ActivateSubscriber**
->  *Prevous:*
+>  *Previous:*
 > ```php
 > public function ActivateSubscriber ($service = false, $lists = false, $emailaddress = false, $mobile = false, $mobile_prefix = false)
 > 
@@ -103,7 +103,7 @@ require 'vendor/emailplatform/api_parser/src/ApiParser.class.php';
 <br />
 
 * **UpdateSubscriber**
->  *Prevous:*
+>  *Previous:*
 > ```php
 > public function UpdateSubscriber($subscriberid = false, $emailaddress = false, $mobile = false, $listid = false, $customfields = array())
 > 
@@ -118,7 +118,7 @@ require 'vendor/emailplatform/api_parser/src/ApiParser.class.php';
 <br />
 
 * **ScheduleSendSMS**
->  *Prevous:*
+>  *Previous:*
 > ```php
 > public function ScheduleSendSMS($campaignid = false, $hours = false, $lists = false)
 > 
