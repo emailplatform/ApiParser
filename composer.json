@@ -8,7 +8,7 @@
 	],
 	"homepage": "https://github.com/emailplatform/ApiParser",
 	"license": "MIT",
-	"minimum-stability": "dev",
+	"minimum-stability": "stable",
 	"prefer-stable": true,
 	"authors": [
 		{
