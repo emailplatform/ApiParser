@@ -23,6 +23,6 @@
 		 "emailplatform/api_parser": "1.1.*"
 	},
 	"autoload": {
-        	"psr-4": {"Acme\\": "src/"}
+        	"psr-4": {"emailplatform\\": "src/"}
     	}
 }
