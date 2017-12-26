@@ -6,7 +6,18 @@ class ApiParser
 	const REQUEST_FAILED = 'Unsuccessful request';
 
 	var $settings = array ();
-	var $URL = 'https://api.mailmailmail.net/v1.1';
+	
+	/** Localhost **/
+// 	var $URL = 'http://localhost/public_api';
+	
+	/** Dev **/
+	var $URL = 'https://api-dev.mailmailmail.net/development/';
+	
+	/** Bugs **/
+// 	var $URL = 'https://api-dev.mailmailmail.net/debuging';
+	
+	/** Production **/
+// 	var $URL = 'https://api.mailmailmail.net/v1.1';
 	
 	public function __construct ($settings = array())
 	{
@@ -216,7 +227,7 @@ class ApiParser
 	 * @param String $mobile
 	 *        	Mobile phone to check for.
 	 * @param String $mobilePrefix
-	 * 			Country calling code
+	 * 			Country calling code.
 	 * @param Int $subscriberid
 	 *        	Subscriber id. This can be used instead of the email address.
 	 * @param Boolean $activeonly
@@ -266,11 +277,13 @@ class ApiParser
 	 * @param String $emailaddress
 	 *        	Email Address to check.
 	 * @param String $mobile
-	 * 			Mobile number to check
+	 * 			Mobile number to check.
 	 * @param String $mobilePrefix
-	 * 			Country calling code
+	 * 			Country calling code.
 	 * @param Int $subscriberid
 	 *        	Subscriber id to check.
+	 * @param String $service
+	 * 			Whether to check from email campaigns or sms campaigns.
 	 * @return Int|False Returns the unsubscribed id if there is one. Returns
 	 *         false if there isn't one.
 	 */
@@ -300,10 +313,6 @@ class ApiParser
 	 * @param Int $fieldid
 	 *        	The fieldid to load up. If the field is not present then it
 	 *        	will not load up.
-	 * @param Boolean $load_list_associations
-	 *        	Whether to load up list associations or not. The default is to
-	 *        	load up the associations. Only subscriber importing should
-	 *        	need to skip loading associations.
 	 * @param Boolean $return_options
 	 *        	Whether to return the information loaded from the database or
 	 *        	not. The default is not to return the options, so this sets up
@@ -334,20 +343,18 @@ class ApiParser
 	 * UnsubscribeSubscriberEmail
 	 * Unsubscribes an email address from a particular list.
 	 *
+	 * @param Int $listid
+	 *        	List to remove subscriber from.
 	 * @param String $emailaddress
 	 *        	Subscriber's email address to unsubscribe.
-	 * @param Int $listid
-	 *        	List to remove them from.
 	 * @param Int $subscriberid
 	 *        	Subscriberid to remove.
 	 * @param Boolean $skipcheck
 	 *        	Whether to skip the check to make sure they are on the list.
-	 * @param String $statstype
-	 *        	The type of statistic we're updating (send/autoresponder)
 	 * @param Int $statid
 	 *        	The statistics id we're updating so we can see (through stats)
 	 *        	the number of people who have unsubscribed directly from a
-	 *        	send/autoresponder
+	 *        	send.
 	 * @return Array Returns a status (success,failure) and a reason why.
 	 */
 	public function UnsubscribeSubscriberEmail ($listid = false, $emailaddress = false, $subscriberid = false, $skipcheck = false, 
@@ -370,24 +377,21 @@ class ApiParser
 	/**
 	 * UnsubscribeSubscriberMobile
 	 * Unsubscribes a mobile phone from a particular list.
-	 * Makes sure the mobile phone is subscribed to a list before going any
-	 * further. It updates the list statistics if the person has made a request
-	 * previously and this is confirming that unsubscribe request.
 	 *
-	 * @param String $mobile
-	 *        	Subscriber's mobile phone to unsubscribe.
 	 * @param Int $listid
 	 *        	List to remove them from.
+	 * @param String $mobile
+	 *        	Subscriber's mobile phone to unsubscribe.
+	 * @param String $mobilePrefix
+	 * 			Country calling code.
 	 * @param Int $subscriberid
 	 *        	Subscriberid to remove.
 	 * @param Boolean $skipcheck
 	 *        	Whether to skip the check to make sure they are on the list.
-	 * @param String $statstype
-	 *        	The type of statistic we're updating (send/autoresponder)
 	 * @param Int $statid
 	 *        	The statistics id we're updating so we can see (through stats)
 	 *        	the number of people who have unsubscribed directly from a
-	 *        	send/autoresponder
+	 *        	send.
 	 * @return Array Returns a status (success,failure) and a reason why.
 	 */
 	public function UnsubscribeSubscriberMobile ($listid = false, $mobile = false, $mobilePrefix = false, $subscriberid = false, $skipcheck = false, 
@@ -414,11 +418,18 @@ class ApiParser
 	 * 'bounce','unsubscribe','disabled' lists.
 	 * It will also update list subscribe/unsubscribe counts appropriately.
 	 *
-	 * @param String $emailaddress
-	 *        	Subscriber's email address to re-activate.
+	 * @param String $service
+	 * 			Whether to activate for email campaigns or sms campaigns.
 	 * @param Int $listid
 	 *        	List to activate them on.
-	 * @see IsSubscriberOnList
+	 * @param String $emailaddress
+	 *        	Subscriber's email address to re-activate.
+	 * @param String $mobile
+	 *        	Subscriber's mobile phone to re-activate.
+	 * @param String $mobilePrefix
+	 * 			Country calling code.
+	 * @param Int $subscriberid
+	 * 			Subscriber's ID to re-activate.
 	 *
 	 * @return Array Returns a status (success,failure) and a reason why.
 	 */
@@ -445,11 +456,16 @@ class ApiParser
 	 * Adds a subscriber to a list.
 	 * Checks whether the list actually exists. If it doesn't, returns an error.
 	 *
+	 * @param Int $listid
+	 *        	The list to add the subcriber to.
 	 * @param String $emailaddress
 	 *        	Subscriber address to add to the list.
-	 * @param Mixed $listid
-	 *        	The list to add the subcriber to. This can be a list name or a
-	 *        	list id.
+	 * @param String $mobile
+	 *        	Subscriber mobile phone to add to list.
+	 * @param String $mobilePrefix
+	 * 			Subscriber country calling code.
+	 * @param Array $contactFields
+	 * 			Subscribers' contact fields.
 	 * @param Boolean $add_to_autoresponders
 	 *        	Whether to add the subscriber to the lists' autoresponders or
 	 *        	not.
@@ -484,13 +500,7 @@ class ApiParser
 	 * GetLists
 	 * Gets a list of lists that this user owns / has access to.
 	 *
-	 * @param Int $userid
-	 *        	Userid to check lists for. If it's not supplied, it checks
-	 *        	whether this user is an admin or list admin. If they aren't,
-	 *        	only returns lists this user owns / has access to.
-	 * @param Boolean $getUnconfirmedCount
-	 *        	Get unconfirmed count along with the query (OPTIONAL)
-
+	 *
 	 * @return Array Returns an array - list of listid's this user has created
 	 *         (or if the user is an admin/listadmin, returns everything).
 	 */
@@ -570,9 +580,6 @@ class ApiParser
 	 * @param Int $listid
 	 *        	Listid of the list to delete. If not passed in, it will delete
 	 *        	'this' list.
-	 * @param Int $userid
-	 *        	The userid that is deleting the list. This is used so the
-	 *        	stats api can "hide" stats.
 	 *
 	 * @return Boolean True if it deleted the list, false otherwise.
 	 */
@@ -597,9 +604,7 @@ class ApiParser
 	 *        	An array of listids to get custom fields for. If not passed
 	 *        	in, it will use 'this' list. If it's not an array, it will be
 	 *        	converted to one.
-	 * @param Array $additionalFieldIds
-	 *        	An array of fieldids to include even if they dont belong in
-	 *        	any list.       
+	 *          
 	 * @return Array Custom field information for the list provided.
 	 */
 	public function GetCustomFields($listids = false)
@@ -625,6 +630,7 @@ class ApiParser
 	 *        	found.
 	 * @param Boolean $countonly
 	 * 			Whether to only do a count or get the list of subscribers as well.
+	 * 
 	 * @return Mixed This will return the count only if that is set to true.
 	 *         Otherwise this will return an array of data including the count
 	 *         and the subscriber list.Or returns boolean if $atleastone is set
@@ -645,10 +651,17 @@ class ApiParser
 	 * GetSubscriberDetails
 	 * Gets subscriber data including all related events and bounces.
 	 *
-	 * @param String $emailaddress
-	 *        	Email address of the subscriber you want to get more details.
 	 * @param Integer $listid
 	 * 			Contact list you are searching on.
+	 * @param Integer $subscriberid
+	 * 			ID of the subscriber you want to get more details.
+	 * @param String $emailaddress
+	 *        	Email address of the subscriber you want to get more details.
+	 * @param String $mobile
+	 * 			Mobile number the subscriber you want to get more details.
+	 * @param String $mobile_prefix
+	 * 			Country calling code.
+	 * 
 	 * @return Array Return an array of subscribers details.
 	 */
 	public function GetSubscriberDetails($listid = false, $subscriberid = false, $emailaddress = false, $mobile = false, $mobile_prefix = false)
@@ -676,15 +689,16 @@ class ApiParser
 	 * - Any old custom field data will be deleted.
 	 * - NULL data values will not be saved to the database.
 	 *
-	 * @param Array|Integer $subscriberids
-	 *        	ID of the subscribers whose data need to be updated.
+	 * @param Integer $subscriberid
+	 *        	ID of the subscriber whose data need to be updated.
 	 * @param Integer $fieldid
-	 *        	The ID of Custom field you are saving for.
+	 *        	The ID of contact field you are saving for.
 	 * @param Mixed $value
 	 *        	The actual custom field value. If this is an array, it will be
 	 *        	serialized up before saving.
 	 * @param $skipEmptyData
 	 * 			Method won't be executed if field value is empty.
+	 * 
 	 * @return Boolean Returns TRUE if successful, FALSE otherwise.
 	 */
 	public function SaveSubscriberCustomField($subscriberid = false, $fieldid = false, $value = false, $skipEmptyData = false)
@@ -722,13 +736,12 @@ class ApiParser
 	/**
 	 * LoadSubscriberListCustomFields
 	 * Loads customfield data based on the list specified.
-	 * Checks whether the list actually exists and fetches custom fields from
-	 * that list.
 	 *
 	 * @param Int $subscriberid
 	 *        	Subscriber to load up.
 	 * @param Int $listid
 	 *        	The list the subscriber is on.
+	 *        
 	 * @return Array Returns the subscribers custom field data for that
 	 *         particular list.
 	 */
@@ -754,13 +767,12 @@ class ApiParser
 	 *        	List to delete them off.
 	 * @param String $emailaddress
 	 *        	Email Address to delete.
-	 * @param String $string
-	 * 			Mobile to delete
+	 * @param String $mobile
+	 * 			Mobile to delete.
 	 * @param String $mobilePrefix
-	 * 			Country calling code
+	 * 			Country calling code.
 	 * @param Integer $subscriberid
-	 *        	Subscriberid to delete. This is used if the email address is
-	 *        	empty.
+	 *        	Subscriberid to delete.
 	 *
 	 * @return Array Returns a status (success,failure) and a reason why.
 	 */
@@ -786,15 +798,18 @@ class ApiParser
 	 * Updates subscriber info.
 	 *
 	 * @param Integer $listid
-	 * 			List 	from which the subscriber will be updated.
+	 * 			List from which the subscriber will be updated.
 	 * @param Integer $subscriberid
 	 * 			Subscriberid to update.
 	 * @param String $emailaddress
 	 * 			Email address of the subscriber you want update.
-	 * @param Sring $mobile
+	 * @param String $mobile
 	 * 			Mobile of the subscriber you want update.
+	 * @param String $mobilePrefix
+	 * 			Country calling code. 
 	 * @param Array $customfields
 	 *        	Contact fields to be updated.
+	 *        
 	 * @return Array Returns a status (success,failure) and a reason why.
 	 */
 	public function UpdateSubscriber($listid = false, $subscriberid = false, $emailaddress = false, $mobile = false, $mobilePrefix = false, $customfields = array())
@@ -859,6 +874,7 @@ class ApiParser
 	 * 			Date for filtering.
 	 * @param String $searchEndDate
 	 * 			Date for filtering.
+	 * 
 	 * @return Array Returns an array of details about the statistics entry
 	 */
 	public function GetBouncesByList($listid = false, $count_only = false, $bounce_type = false, $searchType = false, $searchStartDate = false, $searchEndDate = false)
@@ -894,6 +910,7 @@ class ApiParser
 	 * 			Date for filtering.
 	 * @param String $searchEndDate
 	 * 			Date for filtering.
+	 * 
 	 * @return Array Returns an array of details about the statistics entry
 	 */
 	public function GetUnsubscribesByList($listid = false, $count_only = false, $searchType = false, $searchStartDate = false, $searchEndDate = false)
@@ -925,6 +942,7 @@ class ApiParser
 	 * @param Int $only_unique
 	 *        	Specify true to count/retrieve unique opens only, specify
 	 *        	false for all opens.
+	 *        
 	 * @return Array Returns an array of opens or if $count_only was set to true
 	 *         returns the number of opens in total
 	 */
@@ -951,7 +969,8 @@ class ApiParser
 	 *        	The statid you want to fetch data for.
 	 * @param Boolean $count_only
 	 *        	Specify True to return the number of recipients instead of a
-	 *        	list of recipients
+	 *        	list of recipients.
+	 *        
 	 * @return Array Returns an array of recipients or if $count_only was set to
 	 *         true returns the number of recipients in total
 	 */
@@ -975,6 +994,8 @@ class ApiParser
 	 *
 	 * @param Int $oldid
 	 *        	Newsletterid of the newsletter to copy.
+	 * @param String $name
+	 * 			Name of the copied newsletter.
 	 *
 	 * @return Array Returns an array of statuses. The first one is whether the
 	 *         newsletter could be found/loaded/copied, the second is whether
@@ -1035,8 +1056,6 @@ class ApiParser
 	 * GetAllListsForEmailAddress
 	 * Gets all subscriberid's, listid's for a particular email address and
 	 * returns an array of them.
-	 * This also only finds active subscribers. If you have unsubscribed from a
-	 * list already it will not return your entry.
 	 *
 	 * @param String $emailaddress
 	 *        	The email address to find on all of the lists.
@@ -1049,6 +1068,7 @@ class ApiParser
 	 * 			Whether to only check for active subscribers or not.
 	 * @param Boolean $include_deleted
 	 *        	Whether to get the subscribers that are marked as deleted.
+	 *        
 	 * @return Array Returns either an empty array (if no email address is
 	 *         passed in) or a multidimensional array containing both
 	 *         subscriberid and listid.
@@ -1072,11 +1092,12 @@ class ApiParser
 	}
 	
 	/**
-	 * Copy
+	 * CopyList
 	 * Copy list details only along with custom field associations.
 	 *
-	 * @param Int $int
+	 * @param Integer $listid
 	 *        	Listid to copy.
+	 *        
 	 * @return Array Returns an array of status (whether the copy worked or not)
 	 *         and a message to go with it. If the copy worked, then the message
 	 *         is 'false'.
@@ -1103,6 +1124,7 @@ class ApiParser
 	 * @param Float $hours
 	 * 			When should the campaign start
 	 * 			(In how many hours from a starting point(real time : now)).
+	 * 
 	 * @return Array Returns an array of status (whether the copy worked or not)
 	 *         and a message to go with it. If the copy worked, then the message
 	 *         is 'false'.
@@ -1132,6 +1154,7 @@ class ApiParser
 	 * 			(In how many hours from a starting point(real time : now)).
 	 * @param Array $lists
 	 * 			Which lists to send.
+	 * 
 	 * @return Array Returns an array of status (whether the copy worked or not)
 	 *         and a message to go with it. If the copy worked, then the message
 	 *         is 'false'.
@@ -1186,7 +1209,8 @@ class ApiParser
 	 * forwards and link clicks for a list
 	 *
 	 * @param Int $listid
-	 *        	The stat id of the entry you want to retrieve from the database.	 *
+	 *        	The stat id of the entry you want to retrieve from the database.
+	 *        
 	 * @return Array Returns an array of the statistics
 	 */
 	public function GetListSummary ($listid = false)
