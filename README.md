@@ -14,6 +14,18 @@ require 'vendor/emailplatform/api_parser/src/ApiParser.class.php';
 ```
 <hr><br />
 
+## How to use
+1. Set up your API credentials (apiusername & apitoken) into **settings.php**
+2. Create instance from **ApiParser.class.php**
+```php
+$parser = new ApiParser($settings);
+```
+3. Call method from ApiParser
+```php
+$parser->GetLists();
+```
+<hr><br />
+
 ## Release notes
 ### _Differences between **v1.0** and **v1.1**_ 
 <br/>
