@@ -625,7 +625,7 @@ class ApiParser
 	 *         and the subscriber list.Or returns boolean if $atleastone is set
 	 *         to true
 	 */
-	public function GetSubscribers ($searchinfo = array(), $countonly = false, $limit = false, $offset = false)
+	public function GetSubscribers ($searchinfo = array(), $countonly = false, $limit = 1000, $offset = 0)
 	{
 		$url = $this->URL . '/Subscribers/GetSubscribers';
 		
