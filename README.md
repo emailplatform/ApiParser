@@ -141,3 +141,18 @@ $parser->GetLists();
 > public function ScheduleSendSMS($campaignid = false, $lists = false, $hours = false)
 > 
 >```
+<br />
+
+* **GetSubscribers**
+>  *Previous:*
+> ```php
+> public function GetSubscribers ($searchinfo = array(), $countonly = false)
+> 
+>```
+>
+>  *Now:*
+> ```php
+> public function GetSubscribers ($searchinfo = array(), $countonly = false, $limit = false, $offset = false)
+> 
+>```
+> * **Added:** limit, offset..
