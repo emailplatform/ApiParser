@@ -1,5 +1,7 @@
 <?php
 
+namespace emailplatform;
+
 class ApiParser
 {
 
