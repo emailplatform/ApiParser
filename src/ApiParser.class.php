@@ -6,7 +6,8 @@ class ApiParser
 	const REQUEST_FAILED = 'Unsuccessful request';
 
 	var $settings = array ();
-	var $URL = 'https://api.mailmailmail.net/v1.1';
+	
+ 	var $URL = 'https://api.mailmailmail.net/v1.1';
 	
 	public function __construct ($settings = array())
 	{
@@ -1217,17 +1218,19 @@ class ApiParser
 		return self::REQUEST_FAILED;
 	}
 	
-	function GetSubscribers_V2($searchinfo = array(), $countonly = false, $limit = 1000, $offset = 0)
+	public function GetSubscribersUpdatedSince($date = false, $listid = false, $limit = 1000, $offset = 0)
 	{
-		$url = $this->URL . '/Subscribers/GetSubscribers_V2';
-		
-		$params = array (
-				'searchinfo' => $searchinfo,
-				'countonly' => $countonly,
-				'limit' => $limit,
-				'offset' => $offset
-		);
-		return $this->MakeGetRequest($url, $params);
-	}
-	
+		$url = $this->URL . '/Subscribers/GetSubscribersUpdatedSince';
+		if($date)
+		{
+			$params = array(
+					'date' => $date,
+					'listid' => $listid,
+					'limit' => $limit,
+					'offset' => $offset
+			);
+			return $this->MakeGetRequest($url, $params);
+		}
+		return self::REQUEST_FAILED;
+	}	
 }
