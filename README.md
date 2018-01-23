@@ -156,3 +156,13 @@ $parser->GetLists();
 > 
 >```
 > * **Added:** limit, offset..
+<br />
+
+#### New methods:
+
+* **GetSubscribersUpdatedSince**
+>  *Definition:*
+> ```php
+> public function GetSubscribersUpdatedSince($date = false, $listid = false, $limit = 1000, $offset = 0)
+> 
+>```
