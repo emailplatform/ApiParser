@@ -43,6 +43,21 @@ $parser->GetLists();
 
 #### Method definition changed:
 
+* **CopyNewsletter**
+>  *Previous:*
+> ```php
+> public function CopyNewsletter($oldid = false, $name = false)
+> 
+>```
+>
+>  *Now:*
+> ```php
+> public function CopyNewsletter($oldid = false, $name = false, $subject = false)
+> 
+>```
+> * **Added:** subject.
+<br />
+
 * **UnsubscribeSubscriberEmail**
 >  *Previous:*
 > ```php
