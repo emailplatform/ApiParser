@@ -41,6 +41,33 @@ $parser->GetLists();
 
 <br/>
 
+
+#### New methods:
+
+* **SendNewsletter**
+>  *Definition:*
+> ```php
+> public function SendNewsletter($newsletterid = 0, $subscriberid = 0, $email = '', $senderEmail = '', $senderName = '', $replyEmail = '')
+> 
+>```
+<br/>
+
+* **GetSampleDataForOTM**
+>  *Definition:*
+> ```php
+> public function GetSampleDataForOTM($fieldid)
+> 
+>```
+<br/>
+
+* **GetSubscribersUpdatedSince**
+>  *Definition:*
+> ```php
+> public function GetSubscribersUpdatedSince($date = false, $listid = false, $limit = 1000, $offset = 0)
+> 
+>```
+<br/>
+
 #### Method definition changed:
 
 * **CopyNewsletter**
@@ -173,11 +200,3 @@ $parser->GetLists();
 > * **Added:** limit, offset..
 <br />
 
-#### New methods:
-
-* **GetSubscribersUpdatedSince**
->  *Definition:*
-> ```php
-> public function GetSubscribersUpdatedSince($date = false, $listid = false, $limit = 1000, $offset = 0)
-> 
->```
