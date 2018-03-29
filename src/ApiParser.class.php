@@ -6,8 +6,10 @@ class ApiParser
 	const REQUEST_FAILED = 'Unsuccessful request';
 
 	var $settings = array ();
+
 	
- 	var $URL = 'https://api.mailmailmail.net/v1.1';
+	/** Production **/
+  	var $URL = 'https://api.mailmailmail.net/v1.1';
 	
 	public function __construct ($settings = array())
 	{
@@ -168,6 +170,8 @@ class ApiParser
 
 	//testing methods start
 	
+	
+	
 	public function HasRequirements ()
 	{
 		if(!is_callable('curl_init'))
@@ -201,7 +205,6 @@ class ApiParser
 	}
 	
 	//testing methods end
-	
 
 	/**
 	 * IsSubscriberOnList
@@ -234,14 +237,17 @@ class ApiParser
 	 * @return Int|False Returns false if there is no such subscriber. Otherwise
 	 *         returns the subscriber id.
 	 */
+	
+
 	public function IsSubscriberOnList ($listids = array(), $emailaddress = false, $mobile = false, $mobilePrefix = false, $subscriberid = false, $activeonly = false, 
 			$not_bounced = false, $return_listid = false)
 	{
 		$url = $this->URL . "/Subscribers/IsSubscriberOnList";
 		$emailaddress = trim($emailaddress);
 		$mobile = trim($mobile);
-		if(!empty($listids) && ($emailaddress || $mobile || $subscriberid))
+		if(!empty($listids) && ($emailaddress || ($mobile && $mobilePrefix) || ($subscriberid && intval($subscriberid) != 0)))
 		{
+		   
 			$params = array (
 					"listids" => $listids,
 					"emailaddress" => $emailaddress,
@@ -400,45 +406,6 @@ class ApiParser
 			);
 			return $this->MakePostRequest($url, $params);
 		}
-	}
-
-	/**
-	 * ActivateSubscriber
-	 * Re-activates a subscriber and removes them from the
-	 * 'bounce','unsubscribe','disabled' lists.
-	 * It will also update list subscribe/unsubscribe counts appropriately.
-	 *
-	 * @param String $service
-	 * 			Whether to activate for email campaigns or sms campaigns.
-	 * @param Int $listid
-	 *        	List to activate them on.
-	 * @param String $emailaddress
-	 *        	Subscriber's email address to re-activate.
-	 * @param String $mobile
-	 *        	Subscriber's mobile phone to re-activate.
-	 * @param String $mobilePrefix
-	 * 			Country calling code.
-	 * @param Int $subscriberid
-	 * 			Subscriber's ID to re-activate.
-	 *
-	 * @return Array Returns a status (success,failure) and a reason why.
-	 */
-	public function ActivateSubscriber ($service = false, $listid = false, $emailaddress = false, $mobile = false, $mobile_prefix = false, $subscriberid = false)
-	{
-		$url = $this->URL . '/Subscribers/ActivateSubscriber';
-		if($listid && ($emailaddress || ($mobile && $mobile_prefix) || $subscriberid))
-		{
-			$params = array (
-					'service' => $service,
-					'listid' => $listid,
-					'emailaddress' => $emailaddress,
-					'mobile' => $mobile,
-					'mobile_prefix' => $mobile_prefix,
-					'subscriberid' => $subscriberid
-			);
-			return $this->MakePostRequest($url, $params);
-		}
-		return self::REQUEST_FAILED;
 	}
 	
 	/**
@@ -606,6 +573,43 @@ class ApiParser
 					'listids' => $listids
 			);
 			return $this->MakeGetRequest($url, $params);
+		}
+		return self::REQUEST_FAILED;
+	}
+	
+	/**
+	 * SendNewsletter
+	 * 		Attempts to send a newsletter to specific subscriber or seeks for subscriber with given email address
+	 * @param number $newsletterid the ID of the newsletter that will be sent
+	 * @param number $subscriberid [optional] recipient subscriber's ID, $subscriberid or $email required
+	 * @param string $email [optional] address used to found recipient from posible recipients of the newsletter, $subscriberid or $email required
+	 * @param string $senderEmail [optional] sender email from which the email will appear to be sent
+	 * @param string $senderName [optional] sender name from which the email will appear to be sent
+	 * @param string $replyEmail [optional] reply to email, replying will be use this email
+	 * @return boolean True if newsletter was sent, False otherwise
+	 */
+	public function SendNewsletter($newsletterid = 0, $subscriberid = 0, $email = '', $senderEmail = '', $senderName = '', $replyEmail = '')
+	{
+		$email = trim($email);
+		$subscriberid = intval($subscriberid);
+		$newsletterid = intval($newsletterid);
+		$senderEmail = trim($senderEmail);
+		$senderName = trim($senderName);
+		$replyEmail = trim($replyEmail);
+		
+		$url = $this->URL . '/Messaging/SendNewsletter';
+		
+		if($newsletterid && ($subscriberid || $email))
+		{
+			$data = array(
+					'newsletterid' => $newsletterid,
+					'subscriberid' => $subscriberid,
+					'email' => $email,
+					'fromaddress' => $senderEmail,
+					'fromname' => $senderName,
+					'replyaddress' => $replyEmail
+			);
+			return $this->MakePostRequest($url, $data);
 		}
 		return self::REQUEST_FAILED;
 	}
@@ -816,6 +820,24 @@ class ApiParser
 			        'mobile' => $mobile,
 					'mobilePrefix' => $mobilePrefix,
 					'customfields' => $customfields
+			);
+			return $this->MakePostRequest($url, $params);
+		}
+		return self::REQUEST_FAILED;
+	}
+	
+	public function RequestUpdateEmail($subscriberid = false, $listid = false, $oldemail = false, $newemail = false, $contactFields = array(), $source = false)
+	{
+		$url = $this->URL . '/Subscribers/RequestUpdateEmail';
+		if($listid && $subscriberid && !empty($oldemail) && !empty($newemail))
+		{
+			$params = array(
+					'subscriberid' => $subscriberid,
+					'listid' => $listid,
+					'oldemail' => $oldemail,
+					'newemail' => $newemail,
+					'contactFields' => $contactFields,
+					'source' => $source
 			);
 			return $this->MakePostRequest($url, $params);
 		}
@@ -1249,5 +1271,20 @@ class ApiParser
 		);
 		return $this->MakeGetRequest($url, $params);
 	}
+	
+	
+	public function GetSampleDataForOTM($fieldid)
+	{
+	    $url = $this->URL . '/Subscribers/GetSampleDataForOTM';
+	    if($fieldid)
+	    {
+	        $params = array(
+	            'fieldid' => $fieldid
+	        );
+	        return $this->MakeGetRequest($url, $params);
+	    }
+	    return self::REQUEST_FAILED;
+	}
+	
 	
 }
