@@ -6,10 +6,8 @@ class ApiParser
 	const REQUEST_FAILED = 'Unsuccessful request';
 
 	var $settings = array ();
-
 	
-	/** Production **/
-  	var $URL = 'https://api.mailmailmail.net/v1.1';
+   	var $URL = 'https://api.mailmailmail.net/v1.1';
 	
 	public function __construct ($settings = array())
 	{
@@ -321,7 +319,7 @@ class ApiParser
 	 */
 	public function LoadCustomField ($fieldid = 0, $return_options = false, $makeInstance = false)
 	{
-		$url = $this->settings["URL"] . "/CustomFields/LoadCustomField";
+	    $url = $this->URL . "/CustomFields/LoadCustomField";
 		if($fieldid)
 		{
 			$params = array (
@@ -434,7 +432,7 @@ class ApiParser
 	 *         id, or if the list doesn't really exist. If it works, then it
 	 *         returns the new subscriber id from the database.
 	 */
-	public function AddSubscriberToList($listid = false, $emailaddress = false, $mobile = false, $mobilePrefix = false, $contactFields = array(), $add_to_autoresponders = false, $skip_listcheck = false)
+	public function AddSubscriberToList($listid = false, $emailaddress = false, $mobile = false, $mobilePrefix = false, $contactFields = array(), $add_to_autoresponders = false, $skip_listcheck = false, $confirmed = true)
 	{
 		$url = $this->URL . '/Subscribers/AddSubscriberToList';
 		if(($emailaddress || ($mobile && $mobilePrefix)) && $listid)
@@ -446,7 +444,25 @@ class ApiParser
 					'mobilePrefix' => $mobilePrefix,
 					'contactFields' => $contactFields,
 					'add_to_autoresponders' => $add_to_autoresponders,
-					'skip_listcheck' => $skip_listcheck
+					'skip_listcheck' => $skip_listcheck,
+					'confirmed' => $confirmed
+			);
+			return $this->MakePostRequest($url, $params);
+		}
+		return self::REQUEST_FAILED;
+	}
+	
+	public function ResubscribeContact($listid = false, $emailaddress = false, $mobileNumber = false, $mobilePrefix = false, $add_to_autoresponders = false)
+	{
+		$url = $this->URL . '/Subscribers/ResubscribeContact';
+		if($listid && ($emailaddress || ($mobileNumber && $mobilePrefix)))
+		{
+			$params = array(
+					'listid' => $listid,
+					'emailaddress' => $emailaddress,
+					'mobileNumber' => $mobileNumber,
+					'mobilePrefix' => $mobilePrefix,
+					'add_to_autoresponders' => $add_to_autoresponders
 			);
 			return $this->MakePostRequest($url, $params);
 		}
@@ -551,6 +567,31 @@ class ApiParser
 			return $this->MakeDeleteRequest($url, $params);
 		}
 		return self::REQUEST_FAILED;
+	}
+	
+	/**
+	 * CreateCustomField
+	 * Create new custom field
+	 *
+	 * @param string $name name of custom field.
+	 * @param string $fieldtype type of custom field.
+	 * @param Array $fieldsettings settings for custom field.
+	 *
+	 * @return int id of new custom field.
+	 */
+	public function CreateCustomField($name = '', $fieldtype = '', $fieldsettings = array())
+	{
+	    $url = $this->URL . '/CustomFields/CreateCustomField';
+	    if($name && $fieldtype)
+	    {
+	        $params = array (
+	            'name' => $name,
+	            'fieldtype' => $fieldtype,
+	            'fieldsettings' => $fieldsettings
+	        );
+	        return $this->MakePostRequest($url, $params);
+	    }
+	    return self::REQUEST_FAILED;
 	}
 	
 	/**
@@ -826,7 +867,25 @@ class ApiParser
 		return self::REQUEST_FAILED;
 	}
 	
-	public function RequestUpdateEmail($subscriberid = false, $listid = false, $oldemail = false, $newemail = false, $contactFields = array(), $source = false)
+	/**
+	 * RequestUpdateEmail
+	 * Request to change current email address.
+	 *
+	 *
+	 * @param Integer $subscriberid
+	 * 			Subscriberid to update.
+	 * @param Integer $listid
+	 * 			List from which the subscriber will be updated.
+	 * @param String $oldemail
+	 * 			Current email address.
+	 * @param String $newemail
+	 * 			New email address.
+	 * @param Array $contactFields
+	 *        	Contact fields to be updated.
+	 *
+	 * @return Integer Returns a status (true/false).
+	 */
+	public function RequestUpdateEmail($subscriberid = false, $listid = false, $oldemail = false, $newemail = false, $contactFields = array())
 	{
 		$url = $this->URL . '/Subscribers/RequestUpdateEmail';
 		if($listid && $subscriberid && !empty($oldemail) && !empty($newemail))
@@ -836,8 +895,7 @@ class ApiParser
 					'listid' => $listid,
 					'oldemail' => $oldemail,
 					'newemail' => $newemail,
-					'contactFields' => $contactFields,
-					'source' => $source
+					'contactFields' => $contactFields
 			);
 			return $this->MakePostRequest($url, $params);
 		}
