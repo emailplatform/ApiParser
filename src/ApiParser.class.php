@@ -7,7 +7,8 @@ class ApiParser
 
 	var $settings = array ();
 	
-   	var $URL = 'https://api.mailmailmail.net/v1.1';
+	/** Production **/
+  	var $URL = 'https://api.mailmailmail.net/v1.1';
 	
 	public function __construct ($settings = array())
 	{
@@ -867,7 +868,41 @@ class ApiParser
 		return self::REQUEST_FAILED;
 	}
 	
-		
+	/**
+	 * RequestUpdateEmail
+	 * Request to change current email address.
+	 *
+	 *
+	 * @param Integer $subscriberid
+	 * 			Subscriberid to update.
+	 * @param Integer $listid
+	 * 			List from which the subscriber will be updated.
+	 * @param String $oldemail
+	 * 			Current email address.
+	 * @param String $newemail
+	 * 			New email address.
+	 * @param Array $contactFields
+	 *        	Contact fields to be updated.
+	 *
+	 * @return Integer Returns a status (true/false).
+	 */
+	public function RequestUpdateEmail($subscriberid = false, $listid = false, $oldemail = false, $newemail = false, $contactFields = array())
+	{
+		$url = $this->URL . '/Subscribers/RequestUpdateEmail';
+		if($listid && $subscriberid && !empty($oldemail) && !empty($newemail))
+		{
+			$params = array(
+					'subscriberid' => $subscriberid,
+					'listid' => $listid,
+					'oldemail' => $oldemail,
+					'newemail' => $newemail,
+					'contactFields' => $contactFields
+			);
+			return $this->MakePostRequest($url, $params);
+		}
+		return self::REQUEST_FAILED;
+	}
+	
 	/**
 	 * FetchStats
 	 * Fetches the details of a newsletter or autoresponder statistics entry
