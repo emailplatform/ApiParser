@@ -7,8 +7,9 @@ class ApiParser
 
 	var $settings = array ();
 	
+
 	/** Production **/
-  	var $URL = 'https://api.mailmailmail.net/v1.1';
+   	var $URL = 'https://api.mailmailmail.net/v1.1';
 	
 	public function __construct ($settings = array())
 	{
@@ -867,6 +868,37 @@ class ApiParser
 		}
 		return self::REQUEST_FAILED;
 	}
+	
+	/**
+	 * ChangeMobile
+	 * Change subscriber mobile.
+	 *
+	 * @param Integer $listid
+	 * 			List from which the subscriber will be updated.
+	 * @param Integer $subscriberid
+	 * 			Subscriberid to update.
+	 * @param String $mobile
+	 * 			Mobile of the subscriber you want update.
+	 * @param String $mobilePrefix
+	 * 			Country calling code.
+	 * @return Array Returns a status (success,failure) and a reason why.
+	 */
+	public function ChangeMobile($listid = false, $subscriberid = false, $mobile = false, $mobilePrefix = false)
+	{
+	    $url = $this->URL . '/Subscribers/ChangeMobile';
+	    if($listid && $subscriberid && $mobile)
+	    {
+	        $params = array(
+	            'listid' => $listid,
+	            'subscriberid' => $subscriberid,
+	            'mobile' => $mobile,
+	            'mobilePrefix' => $mobilePrefix
+	        );
+	        return $this->MakePostRequest($url, $params);
+	    }
+	    return self::REQUEST_FAILED;
+	}
+	
 	
 	/**
 	 * RequestUpdateEmail
