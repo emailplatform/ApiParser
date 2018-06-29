@@ -9,7 +9,7 @@ class ApiParser
 	
 
 	/** Production **/
-   	var $URL = 'https://api.mailmailmail.net/v1.1';
+    var $URL = 'https://api.mailmailmail.net/v1.1';
 	
 	public function __construct ($settings = array())
 	{
@@ -581,7 +581,7 @@ class ApiParser
 	 *
 	 * @return int id of new custom field.
 	 */
-	public function CreateCustomField($name = '', $fieldtype = '', $fieldsettings = array())
+	public function CreateCustomField($name = '', $fieldtype = '', $fieldsettings = array(), $listids = false)
 	{
 	    $url = $this->URL . '/CustomFields/CreateCustomField';
 	    if($name && $fieldtype)
@@ -589,7 +589,8 @@ class ApiParser
 	        $params = array (
 	            'name' => $name,
 	            'fieldtype' => $fieldtype,
-	            'fieldsettings' => $fieldsettings
+	            'fieldsettings' => $fieldsettings,
+	            'listids' => $listids
 	        );
 	        return $this->MakePostRequest($url, $params);
 	    }
