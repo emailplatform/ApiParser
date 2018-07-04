@@ -9,8 +9,8 @@ composer require emailplatform/api_parser
 ```
 You can load dependencies by adding these lines to your code: 
 ```php
-require 'vendor/emailplatform/api_parser/src/settings.php';
-require 'vendor/emailplatform/api_parser/src/ApiParser.class.php';
+require_once 'vendor/emailplatform/api_parser/src/settings.php';
+require_once 'vendor/emailplatform/api_parser/src/ApiParser.class.php';
 ```
 <hr><br />
 
