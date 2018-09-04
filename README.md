@@ -44,6 +44,14 @@ $parser->GetLists();
 
 #### New methods:
 
+* **GetSubscriberEvents**
+>  *Definition:*
+> ```php
+> public function GetSubscriberEvents($listid = false, $subscriberid = false, $limit = 100, $offset = 0)
+> 
+>```
+<br/>
+
 * **SendNewsletter**
 >  *Definition:*
 > ```php
@@ -69,6 +77,22 @@ $parser->GetLists();
 <br/>
 
 #### Method definition changed:
+
+* **GetListSummary**
+>  *Previous:*
+> ```php
+> public function GetListSummary ($listid = false)
+> 
+>```
+>
+>  *Now:*
+> ```php
+> public function GetListSummary ($listid = false, $limit = 100, $offset = 0)
+> 
+>```
+> * **Added:** subject.
+<br />
+
 
 * **CopyNewsletter**
 >  *Previous:*
