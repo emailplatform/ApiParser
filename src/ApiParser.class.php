@@ -1,17 +1,14 @@
 <?php
 
-namespace emailplatform;
-
 class ApiParser
 {
 
 	const REQUEST_FAILED = 'Unsuccessful request';
 
 	var $settings = array ();
-	
 
 	/** Production **/
-    var $URL = 'https://api.mailmailmail.net/v1.1';
+	var $URL = 'https://api.mailmailmail.net/v1.1';
 	
 	public function __construct ($settings = array())
 	{
@@ -723,6 +720,22 @@ class ApiParser
 		return self::REQUEST_FAILED;
 	}
 	
+	public function GetSubscriberEvents($listid = false, $subscriberid = false, $limit = 100, $offset = 0)
+	{
+	    $url = $this->URL . '/Subscribers/GetSubscriberEvents';
+	    if($subscriberid && $listid)
+	    {
+	        $params = array(
+	            'listid' => $listid,
+	            'subscriberid' => $subscriberid,
+	            'limit' => $limit,
+	            'offset' => $offset
+	        );
+	        return $this->MakeGetRequest($url, $params);
+	    }
+	    return self::REQUEST_FAILED;
+	}
+	
 	/**
 	 * Save Subscriber CustomFields
 	 * Saves custom field information for a particular subscriber, particular
@@ -1324,13 +1337,15 @@ class ApiParser
 	 *        
 	 * @return Array Returns an array of the statistics
 	 */
-	public function GetListSummary ($listid = false)
+	public function GetListSummary ($listid = false, $limit = 100, $offset = 0)
 	{
 		$url = $this->URL . '/Stats/GetListSummary';
 		if($listid)
 		{
 			$params = array(
-					'listid' => $listid
+					'listid' => $listid,
+			        'limit' => $limit,
+			        'offset' => $offset
 			);
 			return $this->MakeGetRequest($url, $params);
 		}
@@ -1352,21 +1367,7 @@ class ApiParser
 		}
 		return self::REQUEST_FAILED;
 	}
-	
-	function GetSubscribers_V2($searchinfo = array(), $countonly = false, $limit = 1000, $offset = 0)
-	{
-		$url = $this->URL . '/Subscribers/GetSubscribers_V2';
 		
-		$params = array (
-				'searchinfo' => $searchinfo,
-				'countonly' => $countonly,
-				'limit' => $limit,
-				'offset' => $offset
-		);
-		return $this->MakeGetRequest($url, $params);
-	}
-	
-	
 	public function GetSampleDataForOTM($fieldid)
 	{
 	    $url = $this->URL . '/Subscribers/GetSampleDataForOTM';
