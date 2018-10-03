@@ -6,7 +6,8 @@
 		"API",
 		"library"
 	],
-	"homepage": "https://github.com/emailplatform/ApiParser",
+	"homepage": "https://github.com/emailplatform/ApiParser/tree/1.1.9",
+	"source": "https://github.com/emailplatform/ApiParser/tree/1.1.9",
 	"license": "MIT",
 	"minimum-stability": "stable",
 	"prefer-stable": true,
