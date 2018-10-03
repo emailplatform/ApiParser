@@ -22,7 +22,8 @@ $parser = new ApiParser($settings);
 ```
 3. Call method from ApiParser
 ```php
-$parser->GetLists();
+$newsletterid = 1;
+$parser->ViewNewsletter($newsletterid);
 ```
 <hr><br />
 
@@ -70,13 +71,11 @@ $parser->GetLists();
 * **GetNewsletters**
 >  *Previous:*
 > ```php
-> public function GetNewsletters($countOnly= false, $getLastSentDetails = false, 
-			$content = true, $aftercreatedate = false, $newsletterNameLike = false)
+> public function GetNewsletters($countOnly= false, $getLastSentDetails = false, $content = true, $aftercreatedate = false, $newsletterNameLike = false)
 >```
 >  *Now:*
 > ```php
-> public function GetNewsletters($countOnly= false, $getLastSentDetails = false, 
-			$content = true, $aftercreatedate = false, $newsletterNameLike = false, $limit = false, $offset = false)
+> public function GetNewsletters($countOnly= false, $getLastSentDetails = false, $content = true, $aftercreatedate = false, $newsletterNameLike = false, $limit = false, $offset = false)
 >```
 > * **Added:** $limit & $offset.
 <br />
