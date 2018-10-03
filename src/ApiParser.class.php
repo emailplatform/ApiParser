@@ -7,6 +7,7 @@ class ApiParser
 	const REQUEST_FAILED = 'Unsuccessful request';
 
 	var $settings = array ();
+	
 
 	/** Production **/
 	var $URL = 'https://api.mailmailmail.net/v1.1';
@@ -659,6 +660,46 @@ class ApiParser
 	}
 	
 	/**
+	 * SendSMS
+	 * 		Attempts to send a sms to specific subscriber or seeks for subscriber with given mobile number
+	 * @param string $subject for the sms
+	 * @param string $text for the sms
+	 * @param number $subscriberid [optional] recipient subscriber's ID, $subscriberid or $mobile and $listid required
+	 * @param number $listid [optional] recipient list ID, $listid and $mobile or $subscriberid required
+	 * @param string $mobile [optional] recipient mobile number $listid and $mobile or $subscriberid required
+	 * @param string $mobilePrefix [optional] recipient mobile prefix $listid and $mobile or $subscriberid required
+	 * @param string $country country of sending for which there are credits
+	 * @return boolean True if newsletter was sent, False otherwise
+	 */
+	public function SendSMS($campaignid = 0, $subject = '', $text = '', $subscriberid = 0, $listid = 0, $mobile = '', $mobilePrefix = '')
+	{
+		$campaignid = intval($campaignid);
+		$subscriberid = intval($subscriberid);
+		$subject = trim($subject);
+		$text = trim($text);
+		$listid = intval($listid);
+		$mobile = trim($mobile);
+		$mobilePrefix = trim($mobilePrefix);
+		
+		$url = $this->URL . '/SMS/Send';
+		
+		if(($campaignid || ($subject && $text)) && ($subscriberid || ($listid && $mobile && $mobilePrefix)))
+		{
+			$data = array(
+					'campaignid' => $campaignid,
+					'subject' => $subject,
+					'text' => $text,
+					'subscriberid' => $subscriberid,
+					'listid' => $listid,
+					'mobile' => $mobile,
+					'mobilePrefix' => $mobilePrefix
+			);
+			return $this->MakePostRequest($url, $data);
+		}
+		return self::REQUEST_FAILED;
+	}
+	
+	/**
 	 * GetSubscribers
 	 * Returns a list of subscriber id's based on the information passed in.
 	 * 
@@ -1162,7 +1203,7 @@ class ApiParser
 	 *         array of NewsletterDB.
 	 */
 	public function GetNewsletters($countOnly= false, $getLastSentDetails = false, 
-			$content = true, $aftercreatedate = false, $newsletterNameLike = false)
+			$content = true, $aftercreatedate = false, $newsletterNameLike = false, $limit = false, $offset = false)
 	{
 		$url = $this->URL . '/Newsletters/GetNewsletters';
 		
@@ -1171,7 +1212,9 @@ class ApiParser
 				'getLastSentDetails' => $getLastSentDetails,
 				'content' => $content,
 				'aftercreatedate' => $aftercreatedate,
-				'newsletterNameLike' => $newsletterNameLike 
+				'newsletterNameLike' => $newsletterNameLike,
+				'limit' => $limit,
+				'offset' => $offset
 		);
 		return $this->MakeGetRequest ( $url, $params );
 	}
@@ -1369,6 +1412,7 @@ class ApiParser
 		return self::REQUEST_FAILED;
 	}
 		
+	
 	public function GetSampleDataForOTM($fieldid)
 	{
 	    $url = $this->URL . '/Subscribers/GetSampleDataForOTM';
@@ -1382,5 +1426,47 @@ class ApiParser
 	    return self::REQUEST_FAILED;
 	}
 	
+	public function GetTriggersForSegment($segmentid)
+	{
+		$url = $this->URL . '/Segments/GetTriggersForSegment';
+		if($segmentid)
+		{
+			$params = array(
+					'segmentid' => $segmentid
+			);
+			return $this->MakeGetRequest($url, $params);
+		}
+		return self::REQUEST_FAILED;
+	}
+	
+	public function ViewNewsletter($newsletterid)
+	{
+		$url = $this->URL . '/Newsletters/ViewNewsletter';
+		if($newsletterid)
+		{
+			$params = array(
+					'newsletterid' => $newsletterid
+			);
+			return $this->MakeGetRequest($url, $params);
+		}
+		return self::REQUEST_FAILED;
+	}
+	
+	public function GetSubscribersFromSegment($segmentid = false, $countonly = false, $activeonly = true, $limit = 100, $offset = 0)
+	{
+		$url = $this->URL . '/Subscribers/GetSubscribersFromSegment';
+		if($segmentid)
+		{
+			$params = array(
+					'segmentid' => $segmentid,
+					'countonly' => $countonly,
+					'activeonly' => $activeonly,
+					'limit' => $limit,
+					'offset' => $offset
+			);
+			return $this->MakeGetRequest($url, $params);
+		}
+		return self::REQUEST_FAILED;
+	}
 	
 }
