@@ -27,200 +27,57 @@ $parser->GetLists();
 <hr><br />
 
 ## Release notes
-### _Differences between **v1.0** and **v1.1**_ 
-<br/>
-
-#### Renamed methods:
-| Old name [v1.0] | New name [v1.1]|
-| ------ | ------ |
-| Create_List | CreateList |
-| Update_List | UpdateList |
-| Delete_List | DeleteList |
-| Update_Subscriber | UpdateSubscriber |
-| Copy_Newsletter | CopyNewsletter |
-
+### _Differences between **v1.1** and **v1.1.9**_ 
 <br/>
 
 
 #### New methods:
 
-* **GetSubscriberEvents**
+* **SendSMS**
 >  *Definition:*
 > ```php
-> public function GetSubscriberEvents($listid = false, $subscriberid = false, $limit = 100, $offset = 0)
+> public function SendSMS($campaignid = 0, $subject = '', $text = '', $subscriberid = 0, $listid = 0, $mobile = '', $mobilePrefix = '')
 > 
 >```
 <br/>
 
-* **SendNewsletter**
+* **GetSubscribersFromSegment**
 >  *Definition:*
 > ```php
-> public function SendNewsletter($newsletterid = 0, $subscriberid = 0, $email = '', $senderEmail = '', $senderName = '', $replyEmail = '')
+> public function GetSubscribersFromSegment($segmentid = false, $countonly = false, $activeonly = true, $limit = 100, $offset = 0)
 > 
 >```
 <br/>
 
-* **GetSampleDataForOTM**
+* **GetTriggersForSegment**
 >  *Definition:*
 > ```php
-> public function GetSampleDataForOTM($fieldid)
+> public function GetTriggersForSegment($segmentid)
 > 
 >```
 <br/>
 
-* **GetSubscribersUpdatedSince**
+* **ViewNewsletter**
 >  *Definition:*
 > ```php
-> public function GetSubscribersUpdatedSince($date = false, $listid = false, $limit = 1000, $offset = 0)
+> public function ViewNewsletter($newsletterid)
 > 
 >```
 <br/>
 
 #### Method definition changed:
 
-* **GetListSummary**
+* **GetNewsletters**
 >  *Previous:*
 > ```php
-> public function GetListSummary ($listid = false)
-> 
+> public function GetNewsletters($countOnly= false, $getLastSentDetails = false, 
+			$content = true, $aftercreatedate = false, $newsletterNameLike = false)
 >```
->
 >  *Now:*
 > ```php
-> public function GetListSummary ($listid = false, $limit = 100, $offset = 0)
-> 
+> public function GetNewsletters($countOnly= false, $getLastSentDetails = false, 
+			$content = true, $aftercreatedate = false, $newsletterNameLike = false, $limit = false, $offset = false)
 >```
-> * **Added:** subject.
-<br />
-
-
-* **CopyNewsletter**
->  *Previous:*
-> ```php
-> public function CopyNewsletter($oldid = false, $name = false)
-> 
->```
->
->  *Now:*
-> ```php
-> public function CopyNewsletter($oldid = false, $name = false, $subject = false)
-> 
->```
-> * **Added:** subject.
-<br />
-
-* **UnsubscribeSubscriberEmail**
->  *Previous:*
-> ```php
-> public function UnsubscribeSubscriberEmail ($emailaddress = false, $listid = false, $subscriberid = false, $skipcheck = false, $statid = false)
->```
->
->  *Now:*
-> ```php
-> public function UnsubscribeSubscriberEmail ($listid = false, $emailaddress = false, $subscriberid = false, $skipcheck = false, $statid = false)
->```
-<br />
-
-* **UnsubscribeSubscriberMobile**
->  *Previous:*
-> ```php
-> public function UnsubscribeSubscriberMobile ($mobile = false, $mobilePrefix = false, $listid = false, $subscriberid = false, $skipcheck = false, $statid = false)
->```
->
->  *Now:*
-> ```php
-> public function UnsubscribeSubscriberMobile ($listid = false, $mobile = false, $mobilePrefix = false, $subscriberid = false, $skipcheck = false, $statid = false)
-> 
->```
-<br />
-
-* **GetSubscriberDetails**
->  *Previous:*
-> ```php
-> public function GetSubscriberDetails($emailaddress = false, $listid = false)
-> 
->```
->
->  *Now:*
-> ```php
-> public function GetSubscriberDetails($listid = false, $subscriberid = false, $emailaddress = false, $mobile = false, $mobile_prefix = false)
-> 
->```
-> * **Added:** subscriberid, mobile and mobile_prefix.
-<br />
-
-
-* **GetRecipients**
->  *Previous:*
-> ```php
-> public function GetRecipients($statid = false, $stats_type = false, $count_only = false)
-> 
->```
->
->  *Now:*
-> ```php
-> public function GetRecipients($statid = false, $count_only = false)
-> 
->```
-> * **Removed:** stats_type.
-<br />
-
-* **ActivateSubscriber**
->  *Previous:*
-> ```php
-> public function ActivateSubscriber ($service = false, $lists = false, $emailaddress = false, $mobile = false, $mobile_prefix = false)
-> 
->```
->
->  *Now:*
-> ```php
-> public function ActivateSubscriber ($service = false, $listid = false, $emailaddress = false, $mobile = false, $mobile_prefix = false, $subscriberid = false)
-> 
->```
-> * **Added:** subscriberid.
-<br />
-
-* **UpdateSubscriber**
->  *Previous:*
-> ```php
-> public function UpdateSubscriber($subscriberid = false, $emailaddress = false, $mobile = false, $listid = false, $customfields = array())
-> 
->```
->
->  *Now:*
-> ```php
-> public function UpdateSubscriber($listid = false, $subscriberid = false, $emailaddress = false, $mobile = false, $mobilePrefix = false, $customfields = array())
-> 
->```
-> * **Added:** mobile, mobilePrefix.
-<br />
-
-* **ScheduleSendSMS**
->  *Previous:*
-> ```php
-> public function ScheduleSendSMS($campaignid = false, $hours = false, $lists = false)
-> 
->```
->
->  *Now:*
-> ```php
-> public function ScheduleSendSMS($campaignid = false, $lists = false, $hours = false)
-> 
->```
-<br />
-
-* **GetSubscribers**
->  *Previous:*
-> ```php
-> public function GetSubscribers ($searchinfo = array(), $countonly = false)
-> 
->```
->
->  *Now:*
-> ```php
-> public function GetSubscribers ($searchinfo = array(), $countonly = false, $limit = false, $offset = false)
-> 
->```
-> * **Added:** limit, offset..
+> * **Added:** $limit & $offset.
 <br />
 
