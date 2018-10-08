@@ -28,7 +28,7 @@ $parser->ViewNewsletter($newsletterid);
 <hr><br />
 
 ## Changelog
-
+<br />
 ### _Differences between **v1.1** and **v1.1.9**_ 
 #### New methods:
 
@@ -77,7 +77,7 @@ $parser->ViewNewsletter($newsletterid);
 >```
 > * **Added:** $limit & $offset.
 <hr>
-
+<br />
 ### _Differences between **v1.0** and **v1.1**_ 
 
 #### Renamed methods:
