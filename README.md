@@ -25,10 +25,11 @@ $parser = new ApiParser($settings);
 $newsletterid = 1;
 $parser->ViewNewsletter($newsletterid);
 ```
-<hr><br />
+<hr><br/>
 
 ## Changelog
-<br />
+<br/>
+
 ### _Differences between **v1.1** and **v1.1.9**_ 
 #### New methods:
 
@@ -76,8 +77,8 @@ $parser->ViewNewsletter($newsletterid);
 > public function GetNewsletters($countOnly= false, $getLastSentDetails = false, $content = true, $aftercreatedate = false, $newsletterNameLike = false, $limit = false, $offset = false)
 >```
 > * **Added:** $limit & $offset.
-<hr>
-<br />
+<hr><br/>
+
 ### _Differences between **v1.0** and **v1.1**_ 
 
 #### Renamed methods:
