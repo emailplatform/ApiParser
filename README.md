@@ -27,7 +27,7 @@ $parser->ViewNewsletter($newsletterid);
 ```
 <hr><br />
 
-## Release notes
+## Changelog
 ### _Differences between **v1.1** and **v1.1.9**_ 
 <br/>
 
