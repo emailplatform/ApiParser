@@ -1,4 +1,5 @@
 <?php
+
 namespace emailplatform;
 
 class ApiParser
@@ -7,7 +8,7 @@ class ApiParser
 	const REQUEST_FAILED = 'Unsuccessful request';
 
 	var $settings = array ();
-	
+
 
 	/** Production **/
 	var $URL = 'https://api.mailmailmail.net/v1.1';
@@ -1468,5 +1469,79 @@ class ApiParser
 		}
 		return self::REQUEST_FAILED;
 	}
+	
+	public function GetSegmentSummary($segmentid = false, $from = false, $to = false)
+	{
+		$url = $this->URL . '/Segments/GetSegmentSummary';
+		if($segmentid)
+		{
+			$params = array(
+					'segmentid' => $segmentid,
+					'from' => $from,
+					'to' => $to
+			);
+			return $this->MakeGetRequest($url, $params);
+		}
+		return self::REQUEST_FAILED;
+	}
+	
+	public function GetRulesForSegment($segmentid = false)
+	{
+		$url = $this->URL . '/Segments/GetRulesForSegment';
+		if($segmentid)
+		{
+			$params = array(
+					'segmentid' => $segmentid
+			);
+			return $this->MakeGetRequest($url, $params);
+		}
+		return self::REQUEST_FAILED;
+	}
+	
+	
+	public function EditNewsletter($newsletterid = false, $name = false, $subject = false)
+	{
+		$url = $this->URL . '/Newsletters/EditNewsletter';
+		if($newsletterid && ($subject || $name))
+		{
+			$params = array(
+					'newsletterid' => $newsletterid,
+					'name' => $name,
+					'subject' => $subject
+			);
+			return $this->MakePostRequest($url, $params);
+		}
+		return self::REQUEST_FAILED;
+	}
+	
+	public function SetTriggerStatus($triggerid = false, $status = false)
+	{
+		$url = $this->URL . '/Triggers/SetTriggerStatus';
+		if($triggerid)
+		{
+			$params = array(
+					'triggerid' => $triggerid,
+					'status' => $status
+			);
+			return $this->MakePostRequest($url, $params);
+		}
+		return self::REQUEST_FAILED;
+	}
+	
+	public function SetAutoresponderStatus($autoresponderid = false, $status = false)
+	{
+		$url = $this->URL . '/Autoresponders/SetAutoresponderStatus';
+		if($autoresponderid)
+		{
+			$params = array(
+					'autoresponderid' => $autoresponderid,
+					'status' => $status
+			);
+			return $this->MakePostRequest($url, $params);
+		}
+		return self::REQUEST_FAILED;
+	}
+	
+	
 	
 }
