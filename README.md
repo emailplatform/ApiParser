@@ -27,7 +27,48 @@ $parser->ViewNewsletter($newsletterid);
 ```
 <hr><br/>
 
-## Changelog
+## Changelog:
+### _Differences between **v1.1.9** and **v1.1.10**_ 
+#### New methods:
+
+* **GetSegmentSummary**
+>  *Definition:*
+> ```php
+> public function GetSegmentSummary($segmentid = false, $from = false, $to = false)
+> 
+>```
+<br/>
+
+* **GetRulesForSegment**
+>  *Definition:*
+> ```php
+> public function GetRulesForSegment($segmentid = false)
+> 
+>```
+<br/>
+
+* **EditNewsletter**
+>  *Definition:*
+> ```php
+> public function EditNewsletter($newsletterid = false, $name = false, $subject = false)
+> 
+>```
+<br/>
+
+* **SetTriggerStatus**
+>  *Definition:*
+> ```php
+> public function SetTriggerStatus($triggerid = false, $status = false)
+> 
+>```
+<br/>
+
+* **SetAutoresponderStatus**
+>  *Definition:*
+> ```php
+> public function SetAutoresponderStatus($autoresponderid = false, $status = false)
+> 
+>```
 <br/>
 
 ### _Differences between **v1.1** and **v1.1.9**_ 
