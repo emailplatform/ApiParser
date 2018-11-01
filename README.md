@@ -22,12 +22,34 @@ $parser = new ApiParser($settings);
 ```
 3. Call method from ApiParser
 ```php
-$newsletterid = 1;
-$parser->ViewNewsletter($newsletterid);
+$autoresponderid = 1;
+$startDate = "01.11.2018";
+$endDate = "04.11.2018";
+$parser->GetAutoresponderSummary($newsletterid, $startDate, $endDate);
 ```
 <hr><br/>
 
 ## Changelog:
+### _Differences between **v1.1.10** and **v1.1.11**_ 
+#### New methods:
+
+* **GetTriggerSummary**
+>  *Definition:*
+> ```php
+> public function GetTriggerSummary($triggerid = false, $from = false, $to = false)
+> 
+>```
+<br/>
+
+* **GetAutoresponderSummary**
+>  *Definition:*
+> ```php
+> public function GetAutoresponderSummary($autoresponderid = false, $from = false, $to = false)
+> 
+>```
+<br/>
+
+
 ### _Differences between **v1.1.9** and **v1.1.10**_ 
 #### New methods:
 
