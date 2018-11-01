@@ -8,10 +8,21 @@ class ApiParser
 	const REQUEST_FAILED = 'Unsuccessful request';
 
 	var $settings = array ();
+	
+	/** Localhost **/
+//     var $URL = 'http://localhost/public_api';
 
+	/** Dev **/
+    //var $URL = 'https://api-dev.mailmailmail.net/development/';
+	
+	/** Bugs **/
+	//var $URL = 'https://api-dev.mailmailmail.net/debuging';
+
+	/** Staging **/
+  	var $URL = 'https://api-dev.mailmailmail.net/';
 
 	/** Production **/
-	var $URL = 'https://api.mailmailmail.net/v1.1';
+ 	//var $URL = 'https://api.mailmailmail.net/v1.1';
 	
 	public function __construct ($settings = array())
 	{
@@ -1538,6 +1549,36 @@ class ApiParser
 					'status' => $status
 			);
 			return $this->MakePostRequest($url, $params);
+		}
+		return self::REQUEST_FAILED;
+	}
+	
+	public function GetTriggerSummary($triggerid = false, $from = false, $to = false)
+	{
+		$url = $this->URL . '/Triggers/GetTriggerSummary';
+		if($triggerid)
+		{
+			$params = array(
+					'triggerid' => $triggerid,
+					'from' => $from,
+					'to' => $to
+			);
+			return $this->MakeGetRequest($url, $params);
+		}
+		return self::REQUEST_FAILED;
+	}
+	
+	public function GetAutoresponderSummary($autoresponderid = false, $from = false, $to = false)
+	{
+		$url = $this->URL . '/Autoresponders/GetAutoresponderSummary';
+		if($autoresponderid)
+		{
+			$params = array(
+					'autoresponderid' => $autoresponderid,
+					'from' => $from,
+					'to' => $to
+			);
+			return $this->MakeGetRequest($url, $params);
 		}
 		return self::REQUEST_FAILED;
 	}
