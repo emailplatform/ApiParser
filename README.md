@@ -22,14 +22,43 @@ $parser = new ApiParser($settings);
 ```
 3. Call method from ApiParser
 ```php
-$autoresponderid = 1;
-$startDate = "01.11.2018";
-$endDate = "04.11.2018";
-$parser->GetAutoresponderSummary($newsletterid, $startDate, $endDate);
+$listid = 1;
+$data = array(
+      array(
+           'fieldid' => 8,
+           'fieldvalue' => 'Copenhagen'
+       )
+   );
+$activeonly = true;
+$countonly = false;
+$limit = 100;
+$offset = 1;
+
+$parser->GetSubscribersByCustomField($listid, $data, $activeonly, $countonly, $limit, $offset);
 ```
 <hr><br/>
 
 ## Changelog:
+### _Differences between **v1.1.11** and **v1.2.1**_ 
+#### New methods:
+
+* **AddToOTMDocument**
+>  *Definition:*
+> ```php
+> public function AddToOTMDocument ($listid = false, $subscriberid = false, $emailaddress = false, $mobile = false, $mobilePrefix = false, $fieldid = false, $values = array(), $path = false)
+> 
+>```
+<br/>
+
+* **GetSubscribersByCustomField**
+>  *Definition:*
+> ```php
+> public function GetSubscribersByCustomField ($listid = false, $data = array(), $activeonly = true, $countonly = false, $limit = 1000, $offset = 0)
+> 
+>```
+<br/>
+
+
 ### _Differences between **v1.1.10** and **v1.1.11**_ 
 #### New methods:
 

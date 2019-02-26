@@ -9,8 +9,9 @@ class ApiParser
 
 	var $settings = array ();
 	
+
 	/** Production **/
- 	var $URL = 'https://api.mailmailmail.net/v1.1';
+  	var $URL = 'https://api.mailmailmail.net/v1.1';
 	
 	public function __construct ($settings = array())
 	{
@@ -726,6 +727,26 @@ class ApiParser
 				'offset' => $offset
 		);		
 		return $this->MakeGetRequest($url, $params);	
+	}
+	
+	
+	public function GetSubscribersByCustomField ($listid = false, $data = array(), $activeonly = true, $countonly = false, $limit = 1000, $offset = 0)
+	{
+		$url = $this->URL . '/Subscribers/GetSubscribersByCustomField';
+		
+		if(!empty($data) && $listid)
+		{
+			$params = array (
+					'listid' => $listid,
+					'data' => $data,
+			        'activeonly' => $activeonly,
+					'countonly' => $countonly,
+					'limit' => $limit,
+					'offset' => $offset
+			);
+			return $this->MakeGetRequest($url, $params);
+		}
+		return self::REQUEST_FAILED;
 	}
 	
 	/**
@@ -1571,6 +1592,26 @@ class ApiParser
 		return self::REQUEST_FAILED;
 	}
 	
+    public function AddToOTMDocument ($listid = false, $subscriberid = false, $emailaddress = false, $mobile = false, $mobilePrefix = false, $fieldid = false, 
+	                                  $values = array(), $path = false)
+	{
+		$url = $this->URL . '/Subscribers/AddToOTMDocument';
+		if($listid && ($subscriberid || $emailaddress || ($mobile && $mobilePrefix)) && $fieldid && !empty($values))
+		{
+			$params = array(
+			        'listid' => $listid,
+    			    'subscriberid' => $subscriberid,
+    			    'emailaddress' => $emailaddress,
+    			    'mobile' => $mobile,
+    			    'mobilePrefix' => $mobilePrefix,
+					'fieldid' => $fieldid,
+					'path' => $path,
+					'values' => $values
+			);
+			return $this->MakePostRequest($url, $params);
+		}
+		return self::REQUEST_FAILED;
+	}
 	
 	
 }
