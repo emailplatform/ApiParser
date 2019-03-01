@@ -22,23 +22,34 @@ $parser = new ApiParser($settings);
 ```
 3. Call method from ApiParser
 ```php
-$listid = 1;
-$data = array(
-      array(
-           'fieldid' => 8,
-           'fieldvalue' => 'Copenhagen'
-       )
-   );
-$activeonly = true;
-$countonly = false;
-$limit = 100;
-$offset = 1;
+$listid = 56;
+$count_subscribers = true;
+$limit = 10;
 
-$parser->GetSubscribersByCustomField($listid, $data, $activeonly, $countonly, $limit, $offset);
+$result = $parser->GetSegments($listid, $count_subscribers, $limit);
 ```
 <hr><br/>
 
 ## Changelog:
+### _Differences between **v1.2.1** and **v1.2.2**_ 
+#### New methods:
+
+* **GetTriggers**
+>  *Definition:*
+> ```php
+> public function GetTriggers($listid = false, $limit = 1000, $offset = 0)
+> 
+>```
+<br/>
+
+* **GetSegments**
+>  *Definition:*
+> ```php
+> public function GetSegments($listid = false, $count_subscribers = false, $limit = 100, $offset = 0)
+> 
+>```
+<br/>
+
 ### _Differences between **v1.1.11** and **v1.2.1**_ 
 #### New methods:
 
