@@ -9,7 +9,6 @@ class ApiParser
 
 	var $settings = array ();
 	
-
 	/** Production **/
   	var $URL = 'https://api.mailmailmail.net/v1.1';
 	
@@ -1419,7 +1418,7 @@ class ApiParser
 	
 	public function GetSubscribersUpdatedSince($date = false, $listid = false, $limit = 1000, $offset = 0)
 	{
-		$url = $this->URL . '/Subscribers/GetSubscribersUpdatedSince';
+		$url = $this->URL . '/Subscribers_TEST/GetSubscribersUpdatedSince';
 		if($date)
 		{
 			$params = array(
@@ -1458,6 +1457,33 @@ class ApiParser
 			return $this->MakeGetRequest($url, $params);
 		}
 		return self::REQUEST_FAILED;
+	}
+	
+	public function GetTriggers($listid = false, $limit = 1000, $offset = 0)
+	{
+	    $url = $this->URL . '/Triggers/GetTriggers';
+	    
+	    $params = array(
+	        'listid' => $listid,
+	        'limit' => $limit,
+	        'offset' => $offset
+	    );
+	    
+	    return $this->MakeGetRequest($url, $params);
+	}
+	
+	public function GetSegments($listid = false, $count_subscribers = false, $limit = 100, $offset = 0)
+	{
+	    $url = $this->URL . '/Segments/GetSegments';
+	    
+	    $params = array(
+	        'listid' => $listid,
+	        'count_subscribers' => $count_subscribers,
+	        'limit' => $limit,
+	        'offset' => $offset
+	    );
+	    
+	    return $this->MakeGetRequest($url, $params);
 	}
 	
 	public function ViewNewsletter($newsletterid)
@@ -1592,7 +1618,7 @@ class ApiParser
 		return self::REQUEST_FAILED;
 	}
 	
-    public function AddToOTMDocument ($listid = false, $subscriberid = false, $emailaddress = false, $mobile = false, $mobilePrefix = false, $fieldid = false, 
+	public function AddToOTMDocument ($listid = false, $subscriberid = false, $emailaddress = false, $mobile = false, $mobilePrefix = false, $fieldid = false, 
 	                                  $values = array(), $path = false)
 	{
 		$url = $this->URL . '/Subscribers/AddToOTMDocument';
@@ -1612,6 +1638,7 @@ class ApiParser
 		}
 		return self::REQUEST_FAILED;
 	}
+	
 	
 	
 }
