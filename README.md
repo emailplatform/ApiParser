@@ -22,11 +22,11 @@ $parser = new ApiParser($settings);
 ```
 3. Call method from ApiParser
 ```php
-$listid = 56;
-$count_subscribers = true;
-$limit = 10;
+$listid = 23;
+$mobileNumber = "20111222";
+$mobilePrefix = "45";
 
-$result = $parser->GetSegments($listid, $count_subscribers, $limit);
+$result = $parser->ResubscribeContact(listid, false, $mobileNumber, $mobilePrefix);
 ```
 <hr><br/>
 
