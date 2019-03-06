@@ -26,7 +26,7 @@ $listid = 23;
 $mobileNumber = "20111222";
 $mobilePrefix = "45";
 
-$result = $parser->ResubscribeContact(listid, false, $mobileNumber, $mobilePrefix);
+$result = $parser->ResubscribeContact($listid, false, $mobileNumber, $mobilePrefix);
 ```
 <hr><br/>
 
