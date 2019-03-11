@@ -26,11 +26,27 @@ $listid = 23;
 $mobileNumber = "20111222";
 $mobilePrefix = "45";
 
-$result = $parser->ResubscribeContact(listid, false, $mobileNumber, $mobilePrefix);
+$result = $parser->ResubscribeContact($listid, false, $mobileNumber, $mobilePrefix);
 ```
 <hr><br/>
 
 ## Changelog:
+
+### _Differences between **v1.2.2** and **v1.2.3**_ 
+#### Method definition changed:
+
+* **ResubscribeContact**
+>  *Previous:*
+> ```php
+> public function ResubscribeContact($listid = false, $emailaddress = false, $mobileNumber = false, $mobilePrefix = false, $add_to_autoresponders = false)
+>```
+>  *Now:*
+> ```php
+> public function ResubscribeContact($listid = false, $emailaddress = false, $mobileNumber = false, $mobilePrefix = false, $add_to_autoresponders = false, $contactFields = array())
+>```
+> * **Added:** $contactFields.
+<hr><br/>
+
 ### _Differences between **v1.2.1** and **v1.2.2**_ 
 #### New methods:
 

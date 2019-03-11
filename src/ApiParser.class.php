@@ -9,6 +9,7 @@ class ApiParser
 
 	var $settings = array ();
 	
+
 	/** Production **/
   	var $URL = 'https://api.mailmailmail.net/v1.1';
 	
@@ -455,7 +456,7 @@ class ApiParser
 		return self::REQUEST_FAILED;
 	}
 	
-	public function ResubscribeContact($listid = false, $emailaddress = false, $mobileNumber = false, $mobilePrefix = false, $add_to_autoresponders = false)
+	public function ResubscribeContact($listid = false, $emailaddress = false, $mobileNumber = false, $mobilePrefix = false, $add_to_autoresponders = false, $contactFields = array())
 	{
 		$url = $this->URL . '/Subscribers/ResubscribeContact';
 		if($listid && ($emailaddress || ($mobileNumber && $mobilePrefix)))
@@ -465,7 +466,8 @@ class ApiParser
 					'emailaddress' => $emailaddress,
 					'mobileNumber' => $mobileNumber,
 					'mobilePrefix' => $mobilePrefix,
-					'add_to_autoresponders' => $add_to_autoresponders
+					'add_to_autoresponders' => $add_to_autoresponders,
+					'contactFields' => $contactFields
 			);
 			return $this->MakePostRequest($url, $params);
 		}
