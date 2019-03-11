@@ -31,6 +31,7 @@ $result = $parser->ResubscribeContact($listid, false, $mobileNumber, $mobilePref
 <hr><br/>
 
 ## Changelog:
+
 ### _Differences between **v1.2.2** and **v1.2.3**_ 
 #### Method definition changed:
 
