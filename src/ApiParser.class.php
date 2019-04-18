@@ -1421,7 +1421,7 @@ class ApiParser
 	
 	public function GetSubscribersUpdatedSince($date = false, $listid = false, $limit = 1000, $offset = 0)
 	{
-		$url = $this->URL . '/Subscribers_TEST/GetSubscribersUpdatedSince';
+		$url = $this->URL . '/Subscribers/GetSubscribersUpdatedSince';
 		if($date)
 		{
 			$params = array(
