@@ -12,6 +12,7 @@ class ApiParser
 
 	/** Production **/
   	var $URL = 'https://api.mailmailmail.net/v1.1';
+
 	
 	public function __construct ($settings = array())
 	{
@@ -1403,7 +1404,7 @@ class ApiParser
 	 *        
 	 * @return Array Returns an array of the statistics
 	 */
-	public function GetListSummary ($listid = false, $limit = 100, $offset = 0)
+	public function GetListSummary ($listid = false, $limit = 10, $offset = 0)
 	{
 		$url = $this->URL . '/Stats/GetListSummary';
 		if($listid)
@@ -1440,9 +1441,9 @@ class ApiParser
 	    $url = $this->URL . '/Subscribers/GetSampleDataForOTM';
 	    if($fieldid)
 	    {
-	        $params = array(
-	            'fieldid' => $fieldid
-	        );
+	        $params = array (
+					'fieldid' => $fieldid
+			);
 	        return $this->MakeGetRequest($url, $params);
 	    }
 	    return self::REQUEST_FAILED;
@@ -1465,11 +1466,11 @@ class ApiParser
 	{
 	    $url = $this->URL . '/Triggers/GetTriggers';
 	    
-	    $params = array(
-	        'listid' => $listid,
-	        'limit' => $limit,
-	        'offset' => $offset
-	    );
+	    $params = array (
+				'listid' => $listid,
+				'limit' => $limit,
+				'offset' => $offset
+		);
 	    
 	    return $this->MakeGetRequest($url, $params);
 	}
@@ -1478,12 +1479,12 @@ class ApiParser
 	{
 	    $url = $this->URL . '/Segments/GetSegments';
 	    
-	    $params = array(
-	        'listid' => $listid,
-	        'count_subscribers' => $count_subscribers,
-	        'limit' => $limit,
-	        'offset' => $offset
-	    );
+	    $params = array (
+				'listid' => $listid,
+				'count_subscribers' => $count_subscribers,
+				'limit' => $limit,
+				'offset' => $offset
+		);
 	    
 	    return $this->MakeGetRequest($url, $params);
 	}
@@ -1531,6 +1532,22 @@ class ApiParser
 			return $this->MakeGetRequest($url, $params);
 		}
 		return self::REQUEST_FAILED;
+	}
+	
+	public function GetNewsletterSummary($newsletterid = false, $statid = false, $from = false, $to = false)
+	{
+	    $url = $this->URL . '/Stats/GetNewsletterSummary';
+	    if($newsletterid)
+	    {
+			$params = array (
+					'newsletterid' => $newsletterid,
+					'statid' => $statid,
+					'from' => $from,
+					'to' => $to
+			);
+			return $this->MakeGetRequest($url, $params);
+		}
+	    return self::REQUEST_FAILED;
 	}
 	
 	public function GetRulesForSegment($segmentid = false)
@@ -1641,6 +1658,42 @@ class ApiParser
 		return self::REQUEST_FAILED;
 	}
 	
+	public function GetSnapshots($subscriberid = false, $triggerid = false, $autoresponderid = false, $campaignid = false, $groupby = "date")
+	{
+	    $url = $this->URL . '/Stats/GetSnapshots';
+	    if($subscriberid)
+	    {
+	        $params = array (
+					'subscriberid' => $subscriberid,
+					'triggerid' => $triggerid,
+					'autoresponderid' => $autoresponderid,
+					'campaignid' => $campaignid,
+					'groupby' => $groupby
+			);
+	        return $this->MakeGetRequest($url, $params);
+	    }
+	    return self::REQUEST_FAILED;
+	}
+	
+	
+	public function GetStatids($listid = false, $segmentid = false, $newsletterid = false, $from = false, $to = false, $limit = 100, $offset = 0)
+	{
+	    $url = $this->URL . '/Stats/GetStatids';
+	    if($listid || $segmentid || $newsletterid)
+	    {
+	        $params = array (
+					'listid' => $listid,
+					'segmentid' => $segmentid,
+					'newsletterid' => $newsletterid,
+					'from' => $from,
+					'to' => $to,
+					'limit' => $limit,
+					'offset' => $offset
+			);
+	        return $this->MakeGetRequest($url, $params);
+	    }
+	    return self::REQUEST_FAILED;
+	}
 	
 	
 }

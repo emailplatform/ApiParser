@@ -22,15 +22,41 @@ $parser = new ApiParser($settings);
 ```
 3. Call method from ApiParser
 ```php
-$listid = 23;
-$mobileNumber = "20111222";
-$mobilePrefix = "45";
-
-$result = $parser->ResubscribeContact($listid, false, $mobileNumber, $mobilePrefix);
+$listid = 24208;
+    
+$info = $parser->GetStatids($listid);
+var_dump($info);
 ```
 <hr><br/>
 
 ## Changelog:
+
+### _Differences between **v1.2.3** and **v1.2.4**_ 
+#### New methods:
+
+* **GetSnapshots**
+>  *Definition:*
+> ```php
+> public function GetSnapshots($subscriberid = false, $triggerid = false, $autoresponderid = false, $campaignid = false, $groupby = "date")
+> 
+>```
+<br>
+
+* **GetNewsletterSummary**
+>  *Definition:*
+> ```php
+> public function GetNewsletterSummary($newsletterid = false, $statid = false, $from = false, $to = false)
+> 
+>```
+<br>
+
+* **GetStatids**
+>  *Definition:*
+> ```php
+> public function GetStatids($listid = false, $segmentid = false, $newsletterid = false, $from = false, $to = false, $limit = 100, $offset = 0)
+> 
+>```
+<hr><br/>
 
 ### _Differences between **v1.2.2** and **v1.2.3**_ 
 #### Method definition changed:
