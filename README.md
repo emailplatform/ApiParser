@@ -31,6 +31,42 @@ var_dump($info);
 
 ## Changelog:
 
+### _Differences between **v1.2.4** and **v1.2.5**_ 
+#### Method condition changed:
+
+* **GetCustomFields**
+>  *Previous:*
+>   
+    public function GetCustomFields($listids = false)
+    {
+        if($listids)
+        {
+            $url = $this->URL . '/Lists/GetCustomFields';
+
+            $params = array (
+                    'listids' => $listids
+            );
+            return $this->MakeGetRequest($url, $params);
+        }
+        return self::REQUEST_FAILED;
+	}
+>
+>  *Now:*
+>
+    public function GetCustomFields($listids = false)
+	{
+		$url = $this->URL . '/Lists/GetCustomFields';
+		
+		$params = array (
+				'listids' => $listids
+		);
+		return $this->MakeGetRequest($url, $params);
+	}
+>```
+> * **listids:** is not required.
+<hr><br/>
+
+
 ### _Differences between **v1.2.3** and **v1.2.4**_ 
 #### New methods:
 
