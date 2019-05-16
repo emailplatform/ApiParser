@@ -615,14 +615,12 @@ class ApiParser
 	public function GetCustomFields($listids = false)
 	{
 		$url = $this->URL . '/Lists/GetCustomFields';
-		if(!empty($listids))
-		{
-			$params = array (
-					'listids' => $listids
-			);
-			return $this->MakeGetRequest($url, $params);
-		}
-		return self::REQUEST_FAILED;
+
+		$params = array (
+			listids' => $listids
+		);
+		
+		return $this->MakeGetRequest($url, $params);
 	}
 	
 	/**
