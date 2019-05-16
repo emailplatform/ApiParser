@@ -36,34 +36,13 @@ var_dump($info);
 
 * **GetCustomFields**
 >  *Previous:*
->   
-    public function GetCustomFields($listids = false)
-    {
-        if($listids)
-        {
-            $url = $this->URL . '/Lists/GetCustomFields';
-
-            $params = array (
-                    'listids' => $listids
-            );
-            return $this->MakeGetRequest($url, $params);
-        }
-        return self::REQUEST_FAILED;
-	}
->
->  *Now:*
->
-    public function GetCustomFields($listids = false)
-	{
-		$url = $this->URL . '/Lists/GetCustomFields';
-		
-		$params = array (
-				'listids' => $listids
-		);
-		return $this->MakeGetRequest($url, $params);
-	}
+> ```php
+> public function GetCustomFields($listids = false) listids is required
 >```
-> * **listids:** is not required.
+>  *Now:*
+> ```php
+> public function GetCustomFields($listids = false) listids is not required
+>```
 <hr><br/>
 
 
