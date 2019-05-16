@@ -37,12 +37,13 @@ var_dump($info);
 * **GetCustomFields**
 >  *Previous:*
 > ```php
-> public function GetCustomFields($listids = false) listids is required
+> public function GetCustomFields($listids = false) 
 >```
 >  *Now:*
 > ```php
-> public function GetCustomFields($listids = false) listids is not required
+> public function GetCustomFields($listids = false)
 >```
+> * **listids:** is not required.
 <hr><br/>
 
 
