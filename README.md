@@ -22,9 +22,7 @@ $parser = new ApiParser($settings);
 ```
 3. Call method from ApiParser
 ```php
-$listid = 24208;
-    
-$info = $parser->GetStatids($listid);
+$info = $parser->GetCustomFields();
 var_dump($info);
 ```
 <hr><br/>
