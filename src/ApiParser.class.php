@@ -617,7 +617,7 @@ class ApiParser
 		$url = $this->URL . '/Lists/GetCustomFields';
 
 		$params = array (
-			listids' => $listids
+			'listids' => $listids
 		);
 		
 		return $this->MakeGetRequest($url, $params);
