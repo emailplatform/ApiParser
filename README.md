@@ -22,14 +22,28 @@ $parser = new ApiParser($settings);
 ```
 3. Call method from ApiParser
 ```php
-$listid = 24208;
-    
-$info = $parser->GetStatids($listid);
+$info = $parser->GetCustomFields();
 var_dump($info);
 ```
 <hr><br/>
 
 ## Changelog:
+
+### _Differences between **v1.2.4** and **v1.2.5**_ 
+#### Method condition changed:
+
+* **GetCustomFields**
+>  *Previous:*
+> ```php
+> public function GetCustomFields($listids = false) 
+>```
+>  *Now:*
+> ```php
+> public function GetCustomFields($listids = false)
+>```
+> * **listids:** is not required.
+<hr><br/>
+
 
 ### _Differences between **v1.2.3** and **v1.2.4**_ 
 #### New methods:
