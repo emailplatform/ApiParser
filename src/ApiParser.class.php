@@ -9,17 +9,18 @@ class ApiParser
 
 	var $settings = array ();
 	
-
 	/** Production **/
-  	var $URL = 'https://api.mailmailmail.net/v1.1';
+ 	var $URL = 'https://api.mailmailmail.net/v1.1/';
 
+
+    
 	
 	public function __construct ($settings = array())
 	{
 		$this->settings = $settings;
 	}
 
-	private function GetHTTPHeader ()
+	protected function GetHTTPHeader ()
 	{
 		switch($this->settings["format"])
 		{
@@ -615,11 +616,10 @@ class ApiParser
 	public function GetCustomFields($listids = false)
 	{
 		$url = $this->URL . '/Lists/GetCustomFields';
-
-		$params = array (
-			'listids' => $listids
-		);
 		
+		$params = array (
+				'listids' => $listids
+		);
 		return $this->MakeGetRequest($url, $params);
 	}
 	
@@ -1304,6 +1304,8 @@ class ApiParser
 		return self::REQUEST_FAILED;
 	}
 	
+	
+	
 	/**
 	 * ScheduleSendNewsletter
 	 * Schedule newsletter campaign for sending.
@@ -1439,9 +1441,9 @@ class ApiParser
 	    $url = $this->URL . '/Subscribers/GetSampleDataForOTM';
 	    if($fieldid)
 	    {
-	        $params = array (
-					'fieldid' => $fieldid
-			);
+	        $params = array(
+	            'fieldid' => $fieldid
+	        );
 	        return $this->MakeGetRequest($url, $params);
 	    }
 	    return self::REQUEST_FAILED;
@@ -1464,11 +1466,11 @@ class ApiParser
 	{
 	    $url = $this->URL . '/Triggers/GetTriggers';
 	    
-	    $params = array (
-				'listid' => $listid,
-				'limit' => $limit,
-				'offset' => $offset
-		);
+	    $params = array(
+	        'listid' => $listid,
+	        'limit' => $limit,
+	        'offset' => $offset
+	    );
 	    
 	    return $this->MakeGetRequest($url, $params);
 	}
@@ -1477,12 +1479,12 @@ class ApiParser
 	{
 	    $url = $this->URL . '/Segments/GetSegments';
 	    
-	    $params = array (
-				'listid' => $listid,
-				'count_subscribers' => $count_subscribers,
-				'limit' => $limit,
-				'offset' => $offset
-		);
+	    $params = array(
+	        'listid' => $listid,
+	        'count_subscribers' => $count_subscribers,
+	        'limit' => $limit,
+	        'offset' => $offset
+	    );
 	    
 	    return $this->MakeGetRequest($url, $params);
 	}
@@ -1661,13 +1663,13 @@ class ApiParser
 	    $url = $this->URL . '/Stats/GetSnapshots';
 	    if($subscriberid)
 	    {
-	        $params = array (
-					'subscriberid' => $subscriberid,
-					'triggerid' => $triggerid,
-					'autoresponderid' => $autoresponderid,
-					'campaignid' => $campaignid,
-					'groupby' => $groupby
-			);
+	        $params = array(
+	            'subscriberid' => $subscriberid,
+	            'triggerid' => $triggerid,
+	            'autoresponderid' => $autoresponderid,
+	            'campaignid' => $campaignid,
+	            'groupby' => $groupby
+	        );
 	        return $this->MakeGetRequest($url, $params);
 	    }
 	    return self::REQUEST_FAILED;
@@ -1679,19 +1681,46 @@ class ApiParser
 	    $url = $this->URL . '/Stats/GetStatids';
 	    if($listid || $segmentid || $newsletterid)
 	    {
-	        $params = array (
-					'listid' => $listid,
-					'segmentid' => $segmentid,
-					'newsletterid' => $newsletterid,
-					'from' => $from,
-					'to' => $to,
-					'limit' => $limit,
-					'offset' => $offset
-			);
+	        $params = array(
+	            'listid' => $listid,
+	            'segmentid' => $segmentid,
+	            'newsletterid' => $newsletterid,
+	            'from' => $from,
+	            'to' => $to,
+	            'limit' => $limit,
+	            'offset' => $offset
+	        );
 	        return $this->MakeGetRequest($url, $params);
 	    }
 	    return self::REQUEST_FAILED;
 	}
 	
+	public function GetLeadScore($subscriberid = false)
+	{
+		$url = $this->URL . '/Subscribers/GetLeadScore';
+		if($subscriberid)
+		{
+			$params = array (
+					'subscriberid' => $subscriberid
+			);
+			return $this->MakeGetRequest($url, $params);
+		}
+		return self::REQUEST_FAILED;
+	}
+	
+	public function SetLeadScore($subscriberid = false, $leadScore = false, $type = "add")
+	{
+		$url = $this->URL . '/Subscribers/SetLeadScore';
+		if($subscriberid && $leadScore !== false)
+		{
+			$params = array (
+					'subscriberid' => $subscriberid,
+					'leadScore' => $leadScore,
+					'type' => $type
+			);
+			return $this->MakePostRequest($url, $params);
+		}
+		return self::REQUEST_FAILED;
+	}
 	
 }
