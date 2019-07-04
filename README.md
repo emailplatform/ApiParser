@@ -22,12 +22,30 @@ $parser = new ApiParser($settings);
 ```
 3. Call method from ApiParser
 ```php
-$info = $parser->GetCustomFields();
+$info = $parser->SetLeadScore(4, 70, "add");
 var_dump($info);
 ```
 <hr><br/>
 
 ## Changelog:
+
+### _Differences between **v1.2.5** and **v1.2.6**_ 
+#### New methods:
+
+* **GetLeadScore**
+>  *Definition:*
+> ```php
+> public function GetLeadScore($subscriberid = false)
+>```
+<br>
+
+
+* **SetLeadScore**
+>  *Definition:*
+> ```php
+> public function SetLeadScore($subscriberid = false, $leadScore = false, $type = "add")
+>```
+<br>
 
 ### _Differences between **v1.2.4** and **v1.2.5**_ 
 #### Method condition changed:
