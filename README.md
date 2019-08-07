@@ -22,10 +22,24 @@ $parser = new ApiParser($settings);
 ```
 3. Call method from ApiParser
 ```php
-$info = $parser->SetLeadScore(4, 70, "add");
+$listid = 20;
+$subscriberid = 150;
+$info = $parser->GetTrackingEvents($listid, $subscriberid);
 var_dump($info);
 ```
 <hr><br/>
+
+## Changelog:
+
+### _Differences between **v1.2.6** and **v1.2.7**_ 
+#### New method:
+
+* **GetTrackingEvents**
+>  *Definition:*
+> ```php
+> public function GetTrackingEvents($listid = false, $subscriberid = false, $limit = 100, $offset = 0)
+>```
+<br>
 
 ## Changelog:
 
