@@ -4,16 +4,14 @@ namespace emailplatform;
 
 class ApiParser
 {
-
 	const REQUEST_FAILED = 'Unsuccessful request';
-
+	
 	var $settings = array ();
 	
 	/** Production **/
  	var $URL = 'https://api.mailmailmail.net/v1.1/';
 
 
-    
 	
 	public function __construct ($settings = array())
 	{
@@ -1719,6 +1717,22 @@ class ApiParser
 					'type' => $type
 			);
 			return $this->MakePostRequest($url, $params);
+		}
+		return self::REQUEST_FAILED;
+	}
+	
+	public function GetTrackingEvents($listid = false, $subscriberid = false, $limit = 100, $offset = 0)
+	{
+		$url = $this->URL . '/Subscribers/GetTrackingEvents';
+		if($subscriberid && $listid)
+		{
+			$params = array(
+					'listid' => $listid,
+					'subscriberid' => $subscriberid,
+					'limit' => $limit,
+					'offset' => $offset
+			);
+			return $this->MakeGetRequest($url, $params);
 		}
 		return self::REQUEST_FAILED;
 	}
