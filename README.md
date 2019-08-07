@@ -29,6 +29,18 @@ var_dump($info);
 
 ## Changelog:
 
+### _Differences between **v1.2.6** and **v1.2.7**_ 
+#### New method:
+
+* **GetTrackingEvents**
+>  *Definition:*
+> ```php
+> public function GetTrackingEvents($listid = false, $subscriberid = false, $limit = 100, $offset = 0)
+>```
+<br>
+
+## Changelog:
+
 ### _Differences between **v1.2.5** and **v1.2.6**_ 
 #### New methods:
 
