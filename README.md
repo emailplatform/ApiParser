@@ -22,7 +22,9 @@ $parser = new ApiParser($settings);
 ```
 3. Call method from ApiParser
 ```php
-$info = $parser->SetLeadScore(4, 70, "add");
+$listid = 20;
+$subscriberid = 150;
+$info = $parser->GetTrackingEvents($listid, $subscriberid);
 var_dump($info);
 ```
 <hr><br/>
