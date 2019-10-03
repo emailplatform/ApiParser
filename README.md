@@ -22,14 +22,24 @@ $parser = new ApiParser($settings);
 ```
 3. Call method from ApiParser
 ```php
-$listid = 20;
-$subscriberid = 150;
-$info = $parser->GetTrackingEvents($listid, $subscriberid);
+$campaignid = 20;
+$saveSnapshots = true;
+$info = $parser->ScheduleSendNewsletter($campaignid, false, $saveSnapshots);
 var_dump($info);
 ```
 <hr><br/>
 
 ## Changelog:
+
+### _Differences between **v1.2.7** and **v1.2.9**_ 
+#### Method definition changed:
+
+* **ScheduleSendNewsletter**
+>  *Definition:*
+> ```php
+> public function ScheduleSendNewsletter($campaignid = false, $hours = false, $saveSnapshots = true)
+>```
+<br>
 
 ### _Differences between **v1.2.6** and **v1.2.7**_ 
 #### New method:
