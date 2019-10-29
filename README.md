@@ -1,6 +1,6 @@
 # ApiParser
 PHP class for using our company's API as part of the subscription.
-<hr><br/>
+<hr><br>
 
 ## Installation
 Run following command in terminal from the root of your project:
@@ -12,7 +12,7 @@ You can load dependencies by adding these lines to your code:
 require_once 'vendor/emailplatform/api_parser/src/settings.php';
 require_once 'vendor/emailplatform/api_parser/src/ApiParser.class.php';
 ```
-<hr><br />
+<hr><br>
 
 ## How to use
 1. Set up your API credentials (apiusername & apitoken) into **settings.php**
@@ -27,7 +27,7 @@ $to = "01.11.2019";
 $info = $parser->GetSentEmailCampaignEvents($from, $to);
 var_dump($info);
 ```
-<hr><br/>
+<hr><br>
 
 ## Changelog:
 
@@ -116,7 +116,7 @@ var_dump($info);
 > ```php
 > public function GetSentSMSCampaignEvents($from = false, $to = false $limit = 10, $offset = 0)
 >```
-<br>
+<hr><br>
 
 ### _Differences between **v1.2.6** and **v1.2.7**_ 
 #### New method:
@@ -126,8 +126,7 @@ var_dump($info);
 > ```php
 > public function GetTrackingEvents($listid = false, $subscriberid = false, $limit = 100, $offset = 0)
 >```
-<br>
-
+<hr><br>
 
 ### _Differences between **v1.2.5** and **v1.2.6**_ 
 #### New methods:
@@ -139,13 +138,12 @@ var_dump($info);
 >```
 <br>
 
-
 * **SetLeadScore**
 >  *Definition:*
 > ```php
 > public function SetLeadScore($subscriberid = false, $leadScore = false, $type = "add")
 >```
-<br>
+<hr><br>
 
 ### _Differences between **v1.2.4** and **v1.2.5**_ 
 #### Method condition changed:
@@ -160,7 +158,7 @@ var_dump($info);
 > public function GetCustomFields($listids = false)
 >```
 > * **listids:** is not required.
-<hr><br/>
+<hr><br>
 
 
 ### _Differences between **v1.2.3** and **v1.2.4**_ 
@@ -188,7 +186,7 @@ var_dump($info);
 > public function GetStatids($listid = false, $segmentid = false, $newsletterid = false, $from = false, $to = false, $limit = 100, $offset = 0)
 > 
 >```
-<hr><br/>
+<hr><br>
 
 ### _Differences between **v1.2.2** and **v1.2.3**_ 
 #### Method definition changed:
@@ -203,7 +201,7 @@ var_dump($info);
 > public function ResubscribeContact($listid = false, $emailaddress = false, $mobileNumber = false, $mobilePrefix = false, $add_to_autoresponders = false, $contactFields = array())
 >```
 > * **Added:** $contactFields.
-<hr><br/>
+<hr><br>
 
 ### _Differences between **v1.2.1** and **v1.2.2**_ 
 #### New methods:
@@ -222,7 +220,7 @@ var_dump($info);
 > public function GetSegments($listid = false, $count_subscribers = false, $limit = 100, $offset = 0)
 > 
 >```
-<br/>
+<hr><br>
 
 ### _Differences between **v1.1.11** and **v1.2.1**_ 
 #### New methods:
@@ -233,7 +231,7 @@ var_dump($info);
 > public function AddToOTMDocument ($listid = false, $subscriberid = false, $emailaddress = false, $mobile = false, $mobilePrefix = false, $fieldid = false, $values = array(), $path = false)
 > 
 >```
-<br/>
+<br>
 
 * **GetSubscribersByCustomField**
 >  *Definition:*
@@ -241,8 +239,7 @@ var_dump($info);
 > public function GetSubscribersByCustomField ($listid = false, $data = array(), $activeonly = true, $countonly = false, $limit = 1000, $offset = 0)
 > 
 >```
-<br/>
-
+<hr><br>
 
 ### _Differences between **v1.1.10** and **v1.1.11**_ 
 #### New methods:
@@ -261,7 +258,7 @@ var_dump($info);
 > public function GetAutoresponderSummary($autoresponderid = false, $from = false, $to = false)
 > 
 >```
-<br/>
+<br>
 
 
 ### _Differences between **v1.1.9** and **v1.1.10**_ 
@@ -273,7 +270,7 @@ var_dump($info);
 > public function GetSegmentSummary($segmentid = false, $from = false, $to = false)
 > 
 >```
-<br/>
+<br>
 
 * **GetRulesForSegment**
 >  *Definition:*
@@ -281,7 +278,7 @@ var_dump($info);
 > public function GetRulesForSegment($segmentid = false)
 > 
 >```
-<br/>
+<br>
 
 * **EditNewsletter**
 >  *Definition:*
@@ -289,7 +286,7 @@ var_dump($info);
 > public function EditNewsletter($newsletterid = false, $name = false, $subject = false)
 > 
 >```
-<br/>
+<br>
 
 * **SetTriggerStatus**
 >  *Definition:*
@@ -297,7 +294,7 @@ var_dump($info);
 > public function SetTriggerStatus($triggerid = false, $status = false)
 > 
 >```
-<br/>
+<br>
 
 * **SetAutoresponderStatus**
 >  *Definition:*
@@ -305,7 +302,7 @@ var_dump($info);
 > public function SetAutoresponderStatus($autoresponderid = false, $status = false)
 > 
 >```
-<br/>
+<hr><br>
 
 ### _Differences between **v1.1** and **v1.1.9**_ 
 #### New methods:
@@ -316,7 +313,7 @@ var_dump($info);
 > public function SendSMS($campaignid = 0, $subject = '', $text = '', $subscriberid = 0, $listid = 0, $mobile = '', $mobilePrefix = '')
 > 
 >```
-<br/>
+<br>
 
 * **GetSubscribersFromSegment**
 >  *Definition:*
@@ -324,7 +321,7 @@ var_dump($info);
 > public function GetSubscribersFromSegment($segmentid = false, $countonly = false, $activeonly = true, $limit = 100, $offset = 0)
 > 
 >```
-<br/>
+<br>
 
 * **GetTriggersForSegment**
 >  *Definition:*
@@ -332,7 +329,7 @@ var_dump($info);
 > public function GetTriggersForSegment($segmentid)
 > 
 >```
-<br/>
+<br>
 
 * **ViewNewsletter**
 >  *Definition:*
@@ -340,7 +337,7 @@ var_dump($info);
 > public function ViewNewsletter($newsletterid)
 > 
 >```
-<br/>
+<br>
 
 #### Method definition changed:
 
@@ -354,10 +351,9 @@ var_dump($info);
 > public function GetNewsletters($countOnly= false, $getLastSentDetails = false, $content = true, $aftercreatedate = false, $newsletterNameLike = false, $limit = false, $offset = false)
 >```
 > * **Added:** $limit & $offset.
-<hr><br/>
+<hr><br>
 
 ### _Differences between **v1.0** and **v1.1**_ 
-
 #### Renamed methods:
 | Old name [v1.0] | New name [v1.1]|
 | ------ | ------ |
@@ -367,7 +363,7 @@ var_dump($info);
 | Update_Subscriber | UpdateSubscriber |
 | Copy_Newsletter | CopyNewsletter |
 
-<br/>
+<br>
 
 #### Method definition changed:
 
@@ -381,7 +377,7 @@ var_dump($info);
 > ```php
 > public function UnsubscribeSubscriberEmail ($listid = false, $emailaddress = false, $subscriberid = false, $skipcheck = false, $statid = false)
 >```
-<br />
+<br>
 
 * **UnsubscribeSubscriberMobile**
 >  *Previous:*
@@ -394,7 +390,7 @@ var_dump($info);
 > public function UnsubscribeSubscriberMobile ($listid = false, $mobile = false, $mobilePrefix = false, $subscriberid = false, $skipcheck = false, $statid = false)
 > 
 >```
-<br />
+<br>
 
 * **GetSubscriberDetails**
 >  *Previous:*
@@ -409,7 +405,7 @@ var_dump($info);
 > 
 >```
 > * **Added:** subscriberid, mobile and mobile_prefix.
-<br />
+<br>
 
 
 * **GetRecipients**
@@ -425,7 +421,7 @@ var_dump($info);
 > 
 >```
 > * **Removed:** stats_type.
-<br />
+<br>
 
 * **ActivateSubscriber**
 >  *Previous:*
@@ -440,7 +436,7 @@ var_dump($info);
 > 
 >```
 > * **Added:** subscriberid.
-<br />
+<br>
 
 * **UpdateSubscriber**
 >  *Previous:*
@@ -455,7 +451,7 @@ var_dump($info);
 > 
 >```
 > * **Added:** mobile, mobilePrefix.
-<br />
+<br>
 
 * **ScheduleSendSMS**
 >  *Previous:*
@@ -469,4 +465,4 @@ var_dump($info);
 > public function ScheduleSendSMS($campaignid = false, $lists = false, $hours = false)
 > 
 >```
-
+<hr>
