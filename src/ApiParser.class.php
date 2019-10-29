@@ -4,14 +4,16 @@ namespace emailplatform;
 
 class ApiParser
 {
+
 	const REQUEST_FAILED = 'Unsuccessful request';
-	
+
 	var $settings = array ();
 	
+
 	/** Production **/
- 	var $URL = 'https://api.mailmailmail.net/v1.1/';
+  	var $URL = 'https://api.mailmailmail.net/v1.1/';
 
-
+    
 	
 	public function __construct ($settings = array())
 	{
@@ -1318,14 +1320,15 @@ class ApiParser
 	 *         and a message to go with it. If the copy worked, then the message
 	 *         is 'false'.
 	 */
-	public function ScheduleSendNewsletter($campaignid = false, $hours = false)
+	public function ScheduleSendNewsletter($campaignid = false, $hours = false, $saveSnapshots = true)
 	{
 		$url = $this->URL . '/Sends/ScheduleSend';
 		if($campaignid)
 		{
 			$params = array(
 					'campaignid' => $campaignid,
-					'hours' => $hours
+					'hours' => $hours,
+			        'saveSnapshots' => $saveSnapshots
 			);
 			return $this->MakePostRequest($url, $params);
 		}
@@ -1729,6 +1732,301 @@ class ApiParser
 			$params = array(
 					'listid' => $listid,
 					'subscriberid' => $subscriberid,
+					'limit' => $limit,
+					'offset' => $offset
+			);
+			return $this->MakeGetRequest($url, $params);
+		}
+		return self::REQUEST_FAILED;
+	}
+	
+	/**
+	 * GetSentEmailCampaignEvents
+	 * Fetch events for sent campaigns based on user.
+	 *
+	 * @param String $from
+	 *        	Event date.
+	 * @param String $to
+	 * 			Event date.
+	 * @param Integer $limit
+	 * 			How many events to fetch with single request.
+	 *
+	 * @return Array Returns an array of events for all sent campaigns between $form & $to.
+	 */
+	public function GetSentEmailCampaignEvents ($from = false, $to = false, $limit = 10, $offset = 0)
+	{
+		$url = $this->URL . '/Events/GetSentEmailCampaignEvents';
+		if(!empty($from))
+		{
+			$params = array(
+					'from' => $from,
+					'to' => $to,
+					'limit' => $limit,
+					'offset' => $offset
+			);
+			return $this->MakeGetRequest($url, $params);
+		}
+		return self::REQUEST_FAILED;
+	}
+	
+	/**
+	 * GetSentEmailCampaignWithTriggerEvents
+	 * Fetch events for sent campaigns with trigger based on user.
+	 *
+	 * @param String $from
+	 *        	Event date.
+	 * @param String $to
+	 * 			Event date.
+	 * @param Integer $limit
+	 * 			How many events to fetch with single request.
+	 *
+	 * @return Array Returns an array of events for all sent campaigns between $form & $to.
+	 */
+	public function GetSentEmailCampaignWithTriggerEvents ($from = false, $to = false, $limit = 10, $offset = 0)
+	{
+		$url = $this->URL . '/Events/GetSentEmailCampaignWithTriggerEvents';
+		if(!empty($from))
+		{
+			$params = array(
+					'from' => $from,
+					'to' => $to,
+					'limit' => $limit,
+					'offset' => $offset
+			);
+			return $this->MakeGetRequest($url, $params);
+		}
+		return self::REQUEST_FAILED;
+	}
+	
+	
+	/**
+	 * GetOpenCampaignEvents
+	 * Fetch events for open campaigns based on user.
+	 *
+	 * @param String $from
+	 *        	Event date.
+	 * @param String $to
+	 * 			Event date.
+	 * @param Integer $limit
+	 * 			How many events to fetch with single request.
+	 *
+	 * @return Array Returns an array of events for all opened campaigns between $form & $to.
+	 */
+	public function GetOpenCampaignEvents ($from = false, $to = false, $limit = 10, $offset = 0)
+	{
+		$url = $this->URL . '/Events/GetOpenCampaignEvents';
+		if(!empty($from))
+		{
+			$params = array(
+					'from' => $from,
+					'to' => $to,
+					'limit' => $limit,
+					'offset' => $offset
+			);
+			return $this->MakeGetRequest($url, $params);
+		}
+		return self::REQUEST_FAILED;
+	}
+	
+	
+	/**
+	 * GetOpenTriggersEvents
+	 * Fetch events for open campaigns sent with trigger based on user.
+	 *
+	 * @param String $from
+	 *        	Event date.
+	 * @param String $to
+	 * 			Event date.
+	 * @param Integer $limit
+	 * 			How many events to fetch with single request.
+	 *
+	 * @return Array Returns an array of events for all opened campaigns sent with trigger between $form & $to.
+	 */
+	public function GetOpenTriggersEvents ($from = false, $to = false, $limit = 10, $offset = 0)
+	{
+		$url = $this->URL . '/Events/GetOpenTriggersEvents';
+		if(!empty($from))
+		{
+			$params = array(
+					'from' => $from,
+					'to' => $to,
+					'limit' => $limit,
+					'offset' => $offset
+			);
+			return $this->MakeGetRequest($url, $params);
+		}
+		return self::REQUEST_FAILED;
+	}
+
+	
+	/**
+	 * GetLinkClickCampaignEvents
+	 * Fetch events for link click in campaigns based on user.
+	 *
+	 * @param String $from
+	 *        	Event date.
+	 * @param String $to
+	 * 			Event date.
+	 * @param Integer $limit
+	 * 			How many events to fetch with single request.
+	 *
+	 * @return Array Returns an array of events for all clicked links in campaigns between $form & $to.
+	 */
+	public function GetLinkClickCampaignEvents ($from = false, $to = false, $limit = 10, $offset = 0)
+	{
+		$url = $this->URL . '/Events/GetLinkClickCampaignEvents';
+		if(!empty($from))
+		{
+			$params = array(
+					'from' => $from,
+					'to' => $to,
+					'limit' => $limit,
+					'offset' => $offset
+			);
+			return $this->MakeGetRequest($url, $params);
+		}
+		return self::REQUEST_FAILED;
+	}
+	
+	
+	/**
+	 * GetLinkClickTriggerEvents
+	 * Fetch events for link click in campaigns sent with trigger based on user.
+	 *
+	 * @param String $from
+	 *        	Event date.
+	 * @param String $to
+	 * 			Event date.
+	 * @param Integer $limit
+	 * 			How many events to fetch with single request.
+	 *
+	 * @return Array Returns an array of events for all clicked links in campaigns sent with trigger between $form & $to.
+	 */
+	public function GetLinkClickTriggerEvents ($from = false, $to = false, $limit = 10, $offset = 0)
+	{
+		$url = $this->URL . '/Events/GetLinkClickTriggerEvents';
+		if(!empty($from))
+		{
+			$params = array(
+					'from' => $from,
+					'to' => $to,
+					'limit' => $limit,
+					'offset' => $offset
+			);
+			return $this->MakeGetRequest($url, $params);
+		}
+		return self::REQUEST_FAILED;
+	}
+	
+	
+	/**
+	 * GetSentAutoresponderEvents
+	 * Fetch events for sent autoresponders based on user.
+	 *
+	 * @param String $from
+	 *        	Event date.
+	 * @param String $to
+	 * 			Event date.
+	 * @param Integer $limit
+	 * 			How many events to fetch with single request.
+	 *
+	 * @return Array Returns an array of events for all sent autoresponders between $form & $to.
+	 */
+	public function GetSentAutoresponderEvents ($from = false, $to = false, $limit = 10, $offset = 0)
+	{
+		$url = $this->URL . '/Events/GetSentAutoresponderEvents';
+		if(!empty($from))
+		{
+			$params = array(
+					'from' => $from,
+					'to' => $to,
+					'limit' => $limit,
+					'offset' => $offset
+			);
+			return $this->MakeGetRequest($url, $params);
+		}
+		return self::REQUEST_FAILED;
+	}
+	
+	/**
+	 * GetOpenAutoresponderEvents
+	 * Fetch events for opened autoresponders based on user.
+	 *
+	 * @param String $from
+	 *        	Event date.
+	 * @param String $to
+	 * 			Event date.
+	 * @param Integer $limit
+	 * 			How many events to fetch with single request.
+	 *
+	 * @return Array Returns an array of events for all opened autoresponders between $form & $to.
+	 */
+	public function GetOpenAutoresponderEvents ($from = false, $to = false, $limit = 10, $offset = 0)
+	{
+		$url = $this->URL . '/Events/GetOpenAutoresponderEvents';
+		if(!empty($from))
+		{
+			$params = array(
+					'from' => $from,
+					'to' => $to,
+					'limit' => $limit,
+					'offset' => $offset
+			);
+			return $this->MakeGetRequest($url, $params);
+		}
+		return self::REQUEST_FAILED;
+	}
+	
+	/**
+	 * GetLinkClickAutoresponderEvents
+	 * Fetch events for link click in autoresponders based on user.
+	 *
+	 * @param String $from
+	 *        	Event date.
+	 * @param String $to
+	 * 			Event date.
+	 * @param Integer $limit
+	 * 			How many events to fetch with single request.
+	 *
+	 * @return Array Returns an array of events for all clicked links in campaigns between $form & $to.
+	 */
+	public function GetLinkClickAutoresponderEvents ($from = false, $to = false, $limit = 10, $offset = 0)
+	{
+		$url = $this->URL . '/Events/GetLinkClickAutoresponderEvents';
+		if(!empty($from))
+		{
+			$params = array(
+					'from' => $from,
+					'to' => $to,
+					'limit' => $limit,
+					'offset' => $offset
+			);
+			return $this->MakeGetRequest($url, $params);
+		}
+		return self::REQUEST_FAILED;
+	}
+	
+	/**
+	 * GetSentSMSCampaignEvents
+	 * Fetch events for sent SMS campaigns based on user.
+	 *
+	 * @param String $from
+	 *        	Event date.
+	 * @param String $to
+	 * 			Event date.
+	 * @param Integer $limit
+	 * 			How many events to fetch with single request.
+	 *
+	 * @return Array Returns an array of events for all sent SMS campaigns between $form & $to.
+	 */
+	public function GetSentSMSCampaignEvents ($from = false, $to = false, $limit = 10, $offset = 0)
+	{
+		$url = $this->URL . '/Events/GetSentSMSCampaignEvents';
+		if(!empty($from))
+		{
+			$params = array(
+					'from' => $from,
+					'to' => $to,
 					'limit' => $limit,
 					'offset' => $offset
 			);
