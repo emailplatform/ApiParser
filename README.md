@@ -22,9 +22,9 @@ $parser = new ApiParser($settings);
 ```
 3. Call method from ApiParser
 ```php
-$campaignid = 20;
-$saveSnapshots = true;
-$info = $parser->ScheduleSendNewsletter($campaignid, false, $saveSnapshots);
+$from = "15.10.2019";
+$to = "01.11.2019";
+$info = $parser->GetSentEmailCampaignEvents($from, $to);
 var_dump($info);
 ```
 <hr><br/>
@@ -41,6 +41,78 @@ var_dump($info);
 >```
 <br>
 
+#### New methods:
+
+* **GetSentEmailCampaignEvents**
+>  *Definition:*
+> ```php
+> public function GetSentEmailCampaignEvents($from = false, $to = false $limit = 10, $offset = 0)
+>```
+<br>
+
+* **GetSentEmailCampaignWithTriggerEvents**
+>  *Definition:*
+> ```php
+> public function GetSentEmailCampaignWithTriggerEvents($from = false, $to = false $limit = 10, $offset = 0)
+>```
+<br>
+
+* **GetOpenCampaignEvents**
+>  *Definition:*
+> ```php
+> public function GetOpenCampaignEvents($from = false, $to = false $limit = 10, $offset = 0)
+>```
+<br>
+
+* **GetOpenTriggersEvents**
+>  *Definition:*
+> ```php
+> public function GetOpenTriggersEvents($from = false, $to = false $limit = 10, $offset = 0)
+>```
+<br>
+
+* **GetLinkClickCampaignEvents**
+>  *Definition:*
+> ```php
+> public function GetLinkClickCampaignEvents($from = false, $to = false $limit = 10, $offset = 0)
+>```
+<br>
+
+* **GetLinkClickTriggerEvents**
+>  *Definition:*
+> ```php
+> public function GetLinkClickTriggerEvents($from = false, $to = false $limit = 10, $offset = 0)
+>```
+<br>
+
+* **GetSentAutoresponderEvents**
+>  *Definition:*
+> ```php
+> public function GetSentAutoresponderEvents($from = false, $to = false $limit = 10, $offset = 0)
+>```
+<br>
+
+* **GetOpenAutoresponderEvents**
+>  *Definition:*
+> ```php
+> public function GetOpenAutoresponderEvents($from = false, $to = false $limit = 10, $offset = 0)
+>```
+<br>
+
+* **GetLinkClickAutoresponderEvents**
+>  *Definition:*
+> ```php
+> public function GetLinkClickAutoresponderEvents($from = false, $to = false $limit = 10, $offset = 0)
+>```
+<br>
+
+* **GetSentSMSCampaignEvents**
+>  *Definition:*
+> ```php
+> public function GetSentSMSCampaignEvents($from = false, $to = false $limit = 10, $offset = 0)
+>```
+<br>
+
 ### _Differences between **v1.2.6** and **v1.2.7**_ 
 #### New method:
 
@@ -51,7 +123,6 @@ var_dump($info);
 >```
 <br>
 
-## Changelog:
 
 ### _Differences between **v1.2.5** and **v1.2.6**_ 
 #### New methods:
