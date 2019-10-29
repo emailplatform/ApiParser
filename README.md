@@ -35,10 +35,15 @@ var_dump($info);
 #### Method definition changed:
 
 * **ScheduleSendNewsletter**
->  *Definition:*
+>  *Previous:*
+> ```php
+> public function ScheduleSendNewsletter($campaignid = false, $hours = false)
+>```
+>  *Now:*
 > ```php
 > public function ScheduleSendNewsletter($campaignid = false, $hours = false, $saveSnapshots = true)
 >```
+> * **Added:** $saveSnapshots
 <br>
 
 #### New methods:
