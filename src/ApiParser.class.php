@@ -1335,6 +1335,36 @@ class ApiParser
 		return self::REQUEST_FAILED;
 	}
 	
+	public function ScheduleSendNewsletterToLists($newsletterid = false, $timeToSend = false, $listids = array())
+	{
+	    $url = $this->URL . '/Sends/ScheduleSendNewsletterToLists';
+	    if($newsletterid && !empty($listids))
+	    {
+	        $params = array(
+	            'newsletterid' => $newsletterid,
+	            'timeToSend' => $timeToSend,
+	            'listids' => $listids
+	        );
+	        return $this->MakePostRequest($url, $params);
+	    }
+	    return self::REQUEST_FAILED;
+	}
+	
+	public function ScheduleSendNewsletterToSegments($newsletterid = false, $timeToSend = false, $segmentids = array())
+	{
+	    $url = $this->URL . '/Sends/ScheduleSendNewsletterToSegments';
+	    if($newsletterid && !empty($segmentids))
+	    {
+	        $params = array(
+	            'newsletterid' => $newsletterid,
+	            'timeToSend' => $timeToSend,
+	            'segmentids' => $segmentids
+	        );
+	        return $this->MakePostRequest($url, $params);
+	    }
+	    return self::REQUEST_FAILED;
+	}
+	
 	/**
 	 * ScheduleSendSMS
 	 * Schedule SMS campaign for sending.
