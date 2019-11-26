@@ -31,6 +31,23 @@ var_dump($info);
 
 ## Changelog:
 
+### _Differences between **v1.2.9** and **v1.2.10**_
+#### New methods:
+
+* **ScheduleSendNewsletterToLists**
+>  *Definition:*
+> ```php
+> public function ScheduleSendNewsletterToLists($newsletterid = false, $timeToSend = false, $listids = array())
+>```
+<br>
+
+* **ScheduleSendNewsletterToSegments**
+>  *Definition:*
+> ```php
+> public function ScheduleSendNewsletterToSegments($newsletterid = false, $timeToSend = false, $segmentids = array()))
+>```
+<br>
+
 ### _Differences between **v1.2.7** and **v1.2.9**_ 
 #### Method definition changed:
 
