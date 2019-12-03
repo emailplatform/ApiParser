@@ -634,7 +634,7 @@ class ApiParser
 	 * @param string $replyEmail [optional] reply to email, replying will be use this email
 	 * @return boolean True if newsletter was sent, False otherwise
 	 */
-	public function SendNewsletter($newsletterid = 0, $subscriberid = 0, $email = '', $senderEmail = '', $senderName = '', $replyEmail = '')
+	public function SendNewsletter($newsletterid = 0, $subscriberid = 0, $email = '', $senderEmail = '', $senderName = '', $replyEmail = '', $callbackUrl = false, $reloadFeed = false)
 	{
 		$email = trim($email);
 		$subscriberid = intval($subscriberid);
@@ -653,7 +653,9 @@ class ApiParser
 					'email' => $email,
 					'fromaddress' => $senderEmail,
 					'fromname' => $senderName,
-					'replyaddress' => $replyEmail
+					'replyaddress' => $replyEmail,
+					'callbackUrl' => $callbackUrl,
+					'reloadFeed' => $reloadFeed
 			);
 			return $this->MakePostRequest($url, $data);
 		}
