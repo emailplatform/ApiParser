@@ -22,14 +22,29 @@ $parser = new ApiParser($settings);
 ```
 3. Call method from ApiParser
 ```php
-$from = "15.10.2019";
-$to = "01.11.2019";
-$info = $parser->GetSentEmailCampaignEvents($from, $to);
+$newsletterid = 22;
+$subscriberid = 155;
+$info = $parser->SendNewsletter($newsletterid, $subscriberid);
 var_dump($info);
 ```
 <hr><br>
 
 ## Changelog:
+
+### _Differences between **v1.2.10** and **v1.2.11**_ 
+#### Method definition changed:
+
+* **SendNewsletter**
+>  *Previous:*
+> ```php
+> public function SendNewsletter($newsletterid = 0, $subscriberid = 0, $email = '', $senderEmail = '', $senderName = '', $replyEmail = '')
+>```
+>  *Now:*
+> ```php
+>public function SendNewsletter($newsletterid = 0, $subscriberid = 0, $email = '', $senderEmail = '', $senderName = '', $replyEmail = '', $callbackUrl = false, $reloadFeed = false)
+>```
+> * **Added:** callbackUrl and reloadFeed
+<br>
 
 ### _Differences between **v1.2.9** and **v1.2.10**_
 #### New methods:
