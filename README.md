@@ -22,14 +22,23 @@ $parser = new ApiParser($settings);
 ```
 3. Call method from ApiParser
 ```php
-$newsletterid = 22;
-$subscriberid = 155;
-$info = $parser->SendNewsletter($newsletterid, $subscriberid);
+$listid = 22;
+$customFields = array(1,2);
+$info = $parser->AddCustomFieldsToList($listid, $customFields);
 var_dump($info);
 ```
 <hr><br>
 
 ## Changelog:
+
+### _Differences between **v1.2.11** and **v1.2.12**_ 
+#### New method:
+
+* **AddCustomFieldsToList**
+> ```csharp
+> public function AddCustomFieldsToList($listid = false, $customFields = array())
+>```
+<br>
 
 ### _Differences between **v1.2.10** and **v1.2.11**_ 
 #### Method definition changed:
