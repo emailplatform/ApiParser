@@ -2067,4 +2067,20 @@ class ApiParser
 		return self::REQUEST_FAILED;
 	}
 	
+	public function AddCustomFieldsToList($listid = false, $customFields = array())
+	{
+	    $url = $this->URL . '/Lists/AddCustomFieldsToList';
+	    
+	    if($listid && !empty($customFields))
+	    {
+	        $params = array (
+	            'listid' => $listid,
+	            'customFields' => $customFields
+	        );
+	        return $this->MakePostRequest($url, $params);
+	    }
+	    
+	    return self::REQUEST_FAILED;
+	}
+	
 }
