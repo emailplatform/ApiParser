@@ -22,14 +22,43 @@ $parser = new ApiParser($settings);
 ```
 3. Call method from ApiParser
 ```php
-$listid = 22;
-$customFields = array(1,2);
-$info = $parser->AddCustomFieldsToList($listid, $customFields);
-var_dump($info);
+$name = 'test segment';
+$connector = 'and';
+	    
+$listids = array(189);
+
+$segments = array(
+	     'Segments'=>
+	        array(
+	            array(
+	                'listids' => $listids,
+	                'rules' =>
+	                   array(
+            	                array( 
+            	                    'ruleName' => 'emailaddress', 
+            	                    'ruleOperator' => '=',
+            	                    'ruleValue' => 'test@dev.com'
+            	                )
+	                       )
+	            )
+	        )
+	    );
+
+$result = $this->parser->CreateSegment($name, $segments, $connector);
+var_dump($result);
 ```
 <hr><br>
 
 ## Changelog:
+
+### _Differences between **v1.2.12** and **v1.2.13**_ 
+#### New method:
+
+* **CreateSegment**
+> ```csharp
+> public function CreateSegment($name = "", $rules = array(), $connector = 'and')
+>```
+<br>
 
 ### _Differences between **v1.2.11** and **v1.2.12**_ 
 #### New method:
