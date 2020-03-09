@@ -22,30 +22,14 @@ $parser = new ApiParser($settings);
 ```
 3. Call method from ApiParser
 ```php
-$name = 'test segment';
-$connector = 'and';
-	    
-$listids = array(189);
+$newsletterid = 44691;
+$hours = 0;
+$saveSnapshots = false;
+$reloadFeed = true;
 
-$segments = array(
-	     'Segments'=>
-	        array(
-	            array(
-	                'listids' => $listids,
-	                'rules' =>
-	                   array(
-            	                array( 
-            	                    'ruleName' => 'emailaddress', 
-            	                    'ruleOperator' => '=',
-            	                    'ruleValue' => 'test@dev.com'
-            	                )
-	                       )
-	            )
-	        )
-	    );
+$result = $parser->ScheduleSendNewsletter($newsletterid, $hours, $saveSnapshots, $reloadFeed);
 
-$result = $this->parser->CreateSegment($name, $segments, $connector);
-var_dump($result);
+print_r($result);
 ```
 <hr><br>
 
