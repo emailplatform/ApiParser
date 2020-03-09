@@ -654,8 +654,8 @@ class ApiParser
 					'fromaddress' => $senderEmail,
 					'fromname' => $senderName,
 					'replyaddress' => $replyEmail,
-					'callbackUrl' => $callbackUrl,
-					'reloadFeed' => $reloadFeed
+			        'callbackUrl' => $callbackUrl,
+			        'reloadFeed' => $reloadFeed
 			);
 			return $this->MakePostRequest($url, $data);
 		}
@@ -1322,7 +1322,7 @@ class ApiParser
 	 *         and a message to go with it. If the copy worked, then the message
 	 *         is 'false'.
 	 */
-	public function ScheduleSendNewsletter($campaignid = false, $hours = false, $saveSnapshots = true)
+	public function ScheduleSendNewsletter($campaignid = false, $hours = false, $saveSnapshots = true, $reloadFeed = true)
 	{
 		$url = $this->URL . '/Sends/ScheduleSend';
 		if($campaignid)
@@ -1330,41 +1330,46 @@ class ApiParser
 			$params = array(
 					'campaignid' => $campaignid,
 					'hours' => $hours,
-			        'saveSnapshots' => $saveSnapshots
+					'saveSnapshots' => $saveSnapshots,
+					'reloadFeed' => $reloadFeed
 			);
 			return $this->MakePostRequest($url, $params);
 		}
 		return self::REQUEST_FAILED;
 	}
 	
-	public function ScheduleSendNewsletterToLists($newsletterid = false, $timeToSend = false, $listids = array())
+	public function ScheduleSendNewsletterToLists($newsletterid = false, $timeToSend = false, $listids = array(), $saveSnapshots = true, $reloadFeed = true)
 	{
-	    $url = $this->URL . '/Sends/ScheduleSendNewsletterToLists';
-	    if($newsletterid && !empty($listids))
-	    {
-	        $params = array(
-	            'newsletterid' => $newsletterid,
-	            'timeToSend' => $timeToSend,
-	            'listids' => $listids
-	        );
-	        return $this->MakePostRequest($url, $params);
-	    }
-	    return self::REQUEST_FAILED;
+		$url = $this->URL . '/Sends/ScheduleSendNewsletterToLists';
+		if($newsletterid && !empty($listids))
+		{
+			$params = array (
+					'newsletterid' => $newsletterid,
+					'timeToSend' => $timeToSend,
+					'listids' => $listids,
+					'saveSnapshots' => $saveSnapshots,
+					'reloadFeed' => $reloadFeed
+			);
+			return $this->MakePostRequest($url, $params);
+		}
+		return self::REQUEST_FAILED;
 	}
 	
-	public function ScheduleSendNewsletterToSegments($newsletterid = false, $timeToSend = false, $segmentids = array())
+	public function ScheduleSendNewsletterToSegments($newsletterid = false, $timeToSend = false, $segmentids = array(), $saveSnapshots = true, $reloadFeed = true)
 	{
-	    $url = $this->URL . '/Sends/ScheduleSendNewsletterToSegments';
-	    if($newsletterid && !empty($segmentids))
-	    {
-	        $params = array(
-	            'newsletterid' => $newsletterid,
-	            'timeToSend' => $timeToSend,
-	            'segmentids' => $segmentids
-	        );
-	        return $this->MakePostRequest($url, $params);
-	    }
-	    return self::REQUEST_FAILED;
+		$url = $this->URL . '/Sends/ScheduleSendNewsletterToSegments';
+		if($newsletterid && !empty($segmentids))
+		{
+			$params = array (
+					'newsletterid' => $newsletterid,
+					'timeToSend' => $timeToSend,
+					'segmentids' => $segmentids,
+					'saveSnapshots' => $saveSnapshots,
+					'reloadFeed' => $reloadFeed
+			);
+			return $this->MakePostRequest($url, $params);
+		}
+		return self::REQUEST_FAILED;
 	}
 	
 	/**
@@ -2072,12 +2077,12 @@ class ApiParser
 	    $url = $this->URL . '/Lists/AddCustomFieldsToList';
 	    
 	    if($listid && !empty($customFields))
-	    {
-	        $params = array (
-	            'listid' => $listid,
-	            'customFields' => $customFields
-	        );
-	        return $this->MakePostRequest($url, $params);
+	 	{
+	 	    $params = array (
+	 	        'listid' => $listid,
+	 	        'customFields' => $customFields
+	 	    );
+	 	    return $this->MakePostRequest($url, $params);
 	    }
 	    
 	    return self::REQUEST_FAILED;
