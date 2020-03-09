@@ -55,7 +55,7 @@ var_dump($result);
 #### New method:
 
 * **CreateSegment**
-> ```csharp
+> ```php
 > public function CreateSegment($name = "", $rules = array(), $connector = 'and')
 >```
 <br>
@@ -64,7 +64,7 @@ var_dump($result);
 #### New method:
 
 * **AddCustomFieldsToList**
-> ```csharp
+> ```php
 > public function AddCustomFieldsToList($listid = false, $customFields = array())
 >```
 <br>
