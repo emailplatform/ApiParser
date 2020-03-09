@@ -51,11 +51,50 @@ var_dump($result);
 
 ## Changelog:
 
+### _Differences between **v1.2.13** and **v1.2.14**_ 
+#### Method definition changed:
+
+* **ScheduleSendNewsletter**
+>  *Previous:*
+> ```php
+> public function ScheduleSendNewsletter($campaignid = false, $hours = false, $saveSnapshots = true)
+>```
+>  *Now:*
+> ```php
+> public function ScheduleSendNewsletter($campaignid = false, $hours = false, $saveSnapshots = true, $reloadFeed = true)
+>```
+> * **Added:** reloadFeed
+<br>
+
+* **ScheduleSendNewsletterToLists**
+>  *Previous:*
+> ```php
+> public function ScheduleSendNewsletterToLists($newsletterid = false, $timeToSend = false, $listids = array())
+>```
+>  *Now:*
+> ```php
+> public function ScheduleSendNewsletterToLists($newsletterid = false, $timeToSend = false, $listids = array(), $saveSnapshots = true, $reloadFeed = true)
+>```
+> * **Added:** saveSnapshots and reloadFeed
+<br>
+
+* **ScheduleSendNewsletterToSegments**
+>  *Previous:*
+> ```php
+> public function ScheduleSendNewsletterToSegments($newsletterid = false, $timeToSend = false, $segmentids = array())
+>```
+>  *Now:*
+> ```php
+> public function ScheduleSendNewsletterToSegments($newsletterid = false, $timeToSend = false, $segmentids = array(), $saveSnapshots = true, $reloadFeed = true)
+>```
+> * **Added:** saveSnapshots and reloadFeed
+<br>
+
 ### _Differences between **v1.2.12** and **v1.2.13**_ 
 #### New method:
 
 * **CreateSegment**
-> ```csharp
+> ```php
 > public function CreateSegment($name = "", $rules = array(), $connector = 'and')
 >```
 <br>
@@ -64,7 +103,7 @@ var_dump($result);
 #### New method:
 
 * **AddCustomFieldsToList**
-> ```csharp
+> ```php
 > public function AddCustomFieldsToList($listid = false, $customFields = array())
 >```
 <br>
