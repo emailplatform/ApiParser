@@ -21,35 +21,59 @@ require_once 'vendor/emailplatform/api_parser/src/ApiParser.class.php';
 $parser = new ApiParser($settings);
 ```
 3. Call method from ApiParser
-```php
-$name = 'test segment';
-$connector = 'and';
-	    
-$listids = array(189);
 
-$segments = array(
-	     'Segments'=>
-	        array(
-	            array(
-	                'listids' => $listids,
-	                'rules' =>
-	                   array(
-            	                array( 
-            	                    'ruleName' => 'emailaddress', 
-            	                    'ruleOperator' => '=',
-            	                    'ruleValue' => 'test@dev.com'
-            	                )
-	                       )
-	            )
-	        )
-	    );
+``` php
+$newsletterid = 44691;
+$hours = 0;
+$saveSnapshots = false;
+$reloadFeed = true;
 
-$result = $this->parser->CreateSegment($name, $segments, $connector);
-var_dump($result);
+$result = $parser->ScheduleSendNewsletter($newsletterid, $hours, $saveSnapshots, $reloadFeed);
+
+print_r($result);
 ```
 <hr><br>
 
 ## Changelog:
+
+### _Differences between **v1.2.13** and **v1.2.14**_ 
+#### Method definition changed:
+
+* **ScheduleSendNewsletter**
+>  *Previous:*
+> ```php
+> public function ScheduleSendNewsletter($campaignid = false, $hours = false, $saveSnapshots = true)
+>```
+>  *Now:*
+> ```php
+> public function ScheduleSendNewsletter($campaignid = false, $hours = false, $saveSnapshots = true, $reloadFeed = true)
+>```
+> * **Added:** reloadFeed
+<br>
+
+* **ScheduleSendNewsletterToLists**
+>  *Previous:*
+> ```php
+> public function ScheduleSendNewsletterToLists($newsletterid = false, $timeToSend = false, $listids = array())
+>```
+>  *Now:*
+> ```php
+> public function ScheduleSendNewsletterToLists($newsletterid = false, $timeToSend = false, $listids = array(), $saveSnapshots = true, $reloadFeed = true)
+>```
+> * **Added:** saveSnapshots and reloadFeed
+<br>
+
+* **ScheduleSendNewsletterToSegments**
+>  *Previous:*
+> ```php
+> public function ScheduleSendNewsletterToSegments($newsletterid = false, $timeToSend = false, $segmentids = array())
+>```
+>  *Now:*
+> ```php
+> public function ScheduleSendNewsletterToSegments($newsletterid = false, $timeToSend = false, $segmentids = array(), $saveSnapshots = true, $reloadFeed = true)
+>```
+> * **Added:** saveSnapshots and reloadFeed
+<br>
 
 ### _Differences between **v1.2.12** and **v1.2.13**_ 
 #### New method:
