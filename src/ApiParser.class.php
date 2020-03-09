@@ -2083,4 +2083,19 @@ class ApiParser
 	    return self::REQUEST_FAILED;
 	}
 	
+	public function CreateSegment($name = "", $rules = array(), $connector = 'and')
+	{
+	    $url = $this->URL . '/Segments/CreateSegment';
+	    if(!empty($name) && !empty($rules) && !empty($connector))
+	    {
+	        $params = array(
+	            'name' => $name,
+	            'rules' => $rules,
+	            'connector' => $connector
+	        );
+	        return $this->MakePostRequest($url, $params);
+	    }
+	    return self::REQUEST_FAILED;
+	}
+	
 }
