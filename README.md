@@ -21,7 +21,8 @@ require_once 'vendor/emailplatform/api_parser/src/ApiParser.class.php';
 $parser = new ApiParser($settings);
 ```
 3. Call method from ApiParser
-```php
+
+``` php
 $newsletterid = 44691;
 $hours = 0;
 $saveSnapshots = false;
