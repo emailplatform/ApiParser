@@ -9,8 +9,7 @@ class ApiParser
 
 	var $settings = array ();
 	
-
-	/** Production **/
+    /** Production **/
   	var $URL = 'https://api.mailmailmail.net/v1.1/';
 
     
@@ -261,6 +260,23 @@ class ApiParser
 					"activeonly" => $activeonly,
 					"not_bounced" => $not_bounced,
 					"return_listid" => $return_listid
+			);
+			return $this->MakeGetRequest($url, $params);
+		}
+		return self::REQUEST_FAILED;
+	}
+	
+	public function IsSubscriberOnSegment ($segmentid = false, $subscriberid = false, $emailaddress = false)
+	{
+		$url = $this->URL . "/Subscribers/IsSubscriberOnSegment";
+		$emailaddress = trim($emailaddress);
+		if($segmentid && ($emailaddress || $subscriberid))
+		{
+			
+			$params = array (
+					"segmentid" => $segmentid,
+					"subscriberid" => $subscriberid,
+					"emailaddress" => $emailaddress
 			);
 			return $this->MakeGetRequest($url, $params);
 		}
@@ -522,6 +538,8 @@ class ApiParser
 		return self::REQUEST_FAILED;
 	}
 	
+	
+	
 	/**
 	 * UpdateList
 	 * Updates a current list based on the current class vars.
@@ -574,6 +592,21 @@ class ApiParser
 			return $this->MakeDeleteRequest($url, $params);
 		}
 		return self::REQUEST_FAILED;
+	}
+	
+	public function CreateSegment($name = "", $rules = array(), $connector = 'and')
+	{
+	    $url = $this->URL . '/Segments/CreateSegment';
+	    if(!empty($name) && !empty($rules) && !empty($connector))
+	    {
+	        $params = array(
+	            'name' => $name,
+	            'rules' => $rules,
+	            'connector' => $connector
+	        );
+	        return $this->MakePostRequest($url, $params);
+	    }
+	    return self::REQUEST_FAILED;
 	}
 	
 	/**
@@ -634,7 +667,7 @@ class ApiParser
 	 * @param string $replyEmail [optional] reply to email, replying will be use this email
 	 * @return boolean True if newsletter was sent, False otherwise
 	 */
-	public function SendNewsletter($newsletterid = 0, $subscriberid = 0, $email = '', $senderEmail = '', $senderName = '', $replyEmail = '', $callbackUrl = false, $reloadFeed = false)
+	public function SendNewsletter($newsletterid = 0, $subscriberid = 0, $email = '', $senderEmail = '', $senderName = '', $replyEmail = '', $callbackUrl = false, $reloadFeed = false, $notifyOwner = false)
 	{
 		$email = trim($email);
 		$subscriberid = intval($subscriberid);
@@ -647,15 +680,16 @@ class ApiParser
 		
 		if($newsletterid && ($subscriberid || $email))
 		{
-			$data = array(
+			$data = array (
 					'newsletterid' => $newsletterid,
 					'subscriberid' => $subscriberid,
 					'email' => $email,
 					'fromaddress' => $senderEmail,
 					'fromname' => $senderName,
 					'replyaddress' => $replyEmail,
-			        'callbackUrl' => $callbackUrl,
-			        'reloadFeed' => $reloadFeed
+					'callbackUrl' => $callbackUrl,
+					'reloadFeed' => $reloadFeed,
+					'notifyOwner' => $notifyOwner
 			);
 			return $this->MakePostRequest($url, $data);
 		}
@@ -1322,7 +1356,7 @@ class ApiParser
 	 *         and a message to go with it. If the copy worked, then the message
 	 *         is 'false'.
 	 */
-	public function ScheduleSendNewsletter($campaignid = false, $hours = false, $saveSnapshots = true, $reloadFeed = true)
+	public function ScheduleSendNewsletter($campaignid = false, $hours = false, $saveSnapshots = true, $reloadFeed = true, $notifyOwner = false)
 	{
 		$url = $this->URL . '/Sends/ScheduleSend';
 		if($campaignid)
@@ -1331,14 +1365,15 @@ class ApiParser
 					'campaignid' => $campaignid,
 					'hours' => $hours,
 					'saveSnapshots' => $saveSnapshots,
-					'reloadFeed' => $reloadFeed
+					'reloadFeed' => $reloadFeed,
+					'notifyOwner' => $notifyOwner
 			);
 			return $this->MakePostRequest($url, $params);
 		}
 		return self::REQUEST_FAILED;
 	}
 	
-	public function ScheduleSendNewsletterToLists($newsletterid = false, $timeToSend = false, $listids = array(), $saveSnapshots = true, $reloadFeed = true)
+	public function ScheduleSendNewsletterToLists($newsletterid = false, $timeToSend = false, $listids = array(), $saveSnapshots = true, $reloadFeed = true, $notifyOwner = false)
 	{
 		$url = $this->URL . '/Sends/ScheduleSendNewsletterToLists';
 		if($newsletterid && !empty($listids))
@@ -1348,14 +1383,15 @@ class ApiParser
 					'timeToSend' => $timeToSend,
 					'listids' => $listids,
 					'saveSnapshots' => $saveSnapshots,
-					'reloadFeed' => $reloadFeed
+					'reloadFeed' => $reloadFeed,
+					'notifyOwner' => $notifyOwner
 			);
 			return $this->MakePostRequest($url, $params);
 		}
 		return self::REQUEST_FAILED;
 	}
 	
-	public function ScheduleSendNewsletterToSegments($newsletterid = false, $timeToSend = false, $segmentids = array(), $saveSnapshots = true, $reloadFeed = true)
+	public function ScheduleSendNewsletterToSegments($newsletterid = false, $timeToSend = false, $segmentids = array(), $saveSnapshots = true, $reloadFeed = true, $notifyOwner = false)
 	{
 		$url = $this->URL . '/Sends/ScheduleSendNewsletterToSegments';
 		if($newsletterid && !empty($segmentids))
@@ -1365,7 +1401,8 @@ class ApiParser
 					'timeToSend' => $timeToSend,
 					'segmentids' => $segmentids,
 					'saveSnapshots' => $saveSnapshots,
-					'reloadFeed' => $reloadFeed
+					'reloadFeed' => $reloadFeed,
+					'notifyOwner' => $notifyOwner
 			);
 			return $this->MakePostRequest($url, $params);
 		}
@@ -2088,19 +2125,31 @@ class ApiParser
 	    return self::REQUEST_FAILED;
 	}
 	
-	public function CreateSegment($name = "", $rules = array(), $connector = 'and')
+	public function UpdateOTMDocument ($subscriberid = 0, $fieldid = 0, $fieldValueOTM = array(), $path = "")
 	{
-	    $url = $this->URL . '/Segments/CreateSegment';
-	    if(!empty($name) && !empty($rules) && !empty($connector))
-	    {
-	        $params = array(
-	            'name' => $name,
-	            'rules' => $rules,
-	            'connector' => $connector
-	        );
-	        return $this->MakePostRequest($url, $params);
-	    }
-	    return self::REQUEST_FAILED;
+		$url = $this->URL . '/Subscribers/UpdateOTMDocument';
+		$params = array (
+				'subscriberid' => $subscriberid,
+				'fieldid' => $fieldid,
+				'fieldValueOTM' => $fieldValueOTM,
+				'path' => $path
+		);
+		
+		return $this->MakePostRequest($url, $params);
 	}
 	
+	public function RemoveOTMDocument ($subscriberid = 0, $fieldid = 0, $path = "", $index = 0)
+	{
+		$url = $this->URL . '/Subscribers/RemoveOTMDocument';
+		
+		$params = array (
+				'subscriberid' => $subscriberid,
+				'fieldid' => $fieldid,
+				'path' => $path,
+				'index' => $index
+		);
+		
+		return $this->MakeDeleteRequest($url, $params);
+	}
 }
+
