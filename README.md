@@ -37,7 +37,7 @@ print_r($result);
 
 ## Changelog:
 
-### _Differences between **v1.2.13** and **v1.2.14**_ 
+### _Differences between **v1.2.14** and **v1.2.15**_ 
 #### Method definition changed:
 
 * **ScheduleSendNewsletter**
