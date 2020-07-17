@@ -22,19 +22,90 @@ $parser = new ApiParser($settings);
 ```
 3. Call method from ApiParser
 
-``` php
+```php
 $newsletterid = 44691;
 $hours = 0;
 $saveSnapshots = false;
 $reloadFeed = true;
+$notifyOwner = true;
 
-$result = $parser->ScheduleSendNewsletter($newsletterid, $hours, $saveSnapshots, $reloadFeed);
+$result = $parser->ScheduleSendNewsletter($newsletterid, $hours, $saveSnapshots, $reloadFeed, $notifyOwner);
 
 print_r($result);
 ```
 <hr><br>
 
 ## Changelog:
+
+### _Differences between **v1.2.13** and **v1.2.14**_ 
+#### Method definition changed:
+
+* **ScheduleSendNewsletter**
+>  *Previous:*
+
+> ```php
+> public function ScheduleSendNewsletter($campaignid = false, $hours = false, $saveSnapshots = true, $reloadFeed = true)
+>```
+
+>  *Now:*
+> ```php
+> public function ScheduleSendNewsletter($campaignid = false, $hours = false, $saveSnapshots = true, $reloadFeed = true, $notifyOwner = false)
+>```
+
+> * **Added:** notifyOwner
+<br>
+
+* **ScheduleSendNewsletterToLists**
+>  *Previous:*
+> ```php
+> public function ScheduleSendNewsletterToLists($newsletterid = false, $timeToSend = false, $listids = array(), $saveSnapshots = true, $reloadFeed = true)
+>```
+>  *Now:*
+> ```php
+> public function ScheduleSendNewsletterToLists($newsletterid = false, $timeToSend = false, $listids = array(), $saveSnapshots = true, $reloadFeed = true, $notifyOwner = false)
+>```
+> * **Added:** notifyOwner
+<br>
+
+* **ScheduleSendNewsletterToSegments**
+>  *Previous:*
+> ```php
+> public function ScheduleSendNewsletterToSegments($newsletterid = false, $timeToSend = false, $segmentids = array(), $saveSnapshots = true, $reloadFeed = true)
+>```
+>  *Now:*
+> ```php
+> public function ScheduleSendNewsletterToSegments($newsletterid = false, $timeToSend = false, $segmentids = array(), $saveSnapshots = true, $reloadFeed = true, $notifyOwner = false)
+>```
+> * **Added:** notifyOwner
+<br>
+
+* **SendNewsletter**
+>  *Previous:*
+> ```php
+> public function SendNewsletter($newsletterid = 0, $subscriberid = 0, $email = '', $senderEmail = '', $senderName = '', $replyEmail = '', $callbackUrl = false, $reloadFeed = false)
+>```
+>  *Now:*
+> ```php
+> public function SendNewsletter($newsletterid = 0, $subscriberid = 0, $email = '', $senderEmail = '', $senderName = '', $replyEmail = '', $callbackUrl = false, $reloadFeed = false, $notifyOwner = false)
+>```
+> * **Added:** notifyOwner
+<br>
+
+#### New method:
+
+* **UpdateOTMDocument**
+> ```php
+> public function UpdateOTMDocument ($subscriberid = 0, $fieldid = 0, $fieldValueOTM = array(), $path = "")
+>```
+<br>
+
+* **RemoveOTMDocument**
+> ```php
+> public function RemoveOTMDocument ($subscriberid = 0, $fieldid = 0, $path = "", $index = 0)
+>```
+<br>
+
+
 
 ### _Differences between **v1.2.13** and **v1.2.14**_ 
 #### Method definition changed:
