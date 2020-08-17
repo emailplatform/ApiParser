@@ -37,6 +37,16 @@ print_r($result);
 
 ## Changelog:
 
+### _Differences between **v1.2.15** and **v1.2.16**_ 
+#### Method definition changed:
+
+* **GetSubscriberDetails**
+>  *Previous:*
+`listid was required.`
+
+>  *Now:*
+`listid is not required if subscriberid is specified.`
+
 ### _Differences between **v1.2.14** and **v1.2.15**_ 
 #### Method definition changed:
 
