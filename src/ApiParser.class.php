@@ -805,7 +805,7 @@ class ApiParser
 	public function GetSubscriberDetails($listid = false, $subscriberid = false, $emailaddress = false, $mobile = false, $mobile_prefix = false)
 	{
 		$url = $this->URL . '/Subscribers/GetSubscriberDetails';
-		if(($emailaddress || $mobile || $subscriberid) && $listid)
+		if($subscriberid || ($listid && ($emailaddress || $mobile)))
 		{
 			$params = array(
 					'listid' => $listid,
