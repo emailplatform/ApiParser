@@ -28,7 +28,8 @@ $listid = 0;
 $emailaddress = "";
 $mobileNumenr = "";
 $mobilePrefix = "";
-$value = array(
+$fieldid = 14;
+$fieldValue = array(
    'Lastname' => "Tom",
    'Firstname' => 'Jones',
    'Date' => '31-12-2020 T00:00',
@@ -36,7 +37,7 @@ $value = array(
 );
 $path = 'Users[Lastname=SimpleChange4]';
 
-$result = $parser->UpdateOTMDocument($subscriberid, $listid, $emailaddress, $mobileNumber, $mobilePrefix, $value, $path);
+$result = $parser->UpdateOTMDocument($subscriberid, $listid, $emailaddress, $mobileNumber, $mobilePrefix, $fieldid, $fieldValue, $path);
 
 print_r($result);
 ```
