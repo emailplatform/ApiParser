@@ -23,19 +23,44 @@ $parser = new ApiParser($settings);
 3. Call method from ApiParser
 
 ```php
-$newsletterid = 44691;
-$hours = 0;
-$saveSnapshots = false;
-$reloadFeed = true;
-$notifyOwner = true;
+$subscriberid = 68317547;
+$listid = 0;
+$emailaddress = "";
+$mobileNumenr = "";
+$mobilePrefix = "";
+$value = array(
+   'Lastname' => "Tom",
+   'Firstname' => 'Jones',
+   'Date' => '31-12-2020 T00:00',
+   'Active' => 0
+);
+$path = 'Users[Lastname=SimpleChange4]';
 
-$result = $parser->ScheduleSendNewsletter($newsletterid, $hours, $saveSnapshots, $reloadFeed, $notifyOwner);
+$result = $parser->UpdateOTMDocument($subscriberid, $listid, $emailaddress, $mobileNumber, $mobilePrefix, $value, $path);
 
 print_r($result);
 ```
 <hr><br>
 
 ## Changelog:
+
+### _Differences between **v1.2.16** and **v1.2.17**_ 
+#### Method definition changed:
+
+* **UpdateOTMDocument**
+>  *Previous:*
+
+> ```php
+> public function UpdateOTMDocument ($subscriberid = 0, $fieldid = 0, $fieldValueOTM = array(), $path = "")
+>```
+
+>  *Now:*
+> ```php
+> public function UpdateOTMDocument ($subscriberid = 0, $listid = 0, $emailaddress = "", $mobileNumber = "", $mobilePrefix = "", $fieldid = 0, $fieldValueOTM = array(), $path = "")
+>```
+
+> * **Added:** listid, emailaddress, mobileNumber and mobilePrefix.
+<br>
 
 ### _Differences between **v1.2.15** and **v1.2.16**_ 
 #### Method definition changed:
