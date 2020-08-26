@@ -2125,18 +2125,20 @@ class ApiParser
 	    return self::REQUEST_FAILED;
 	}
 	
-	public function UpdateOTMDocument ($subscriberid = 0, $fieldid = 0, $fieldValueOTM = array(), $path = "")
+	public function UpdateOTMDocument ($subscriberid = 0, $listid = 0, $emailaddress = "", $mobileNumber = "", $mobilePrefix = "", $fieldid = 0, $fieldValueOTM = array(), $path = "")
 	{
 		$url = $this->URL . '/Subscribers/UpdateOTMDocument';
+		
 		$params = array (
 				'subscriberid' => $subscriberid,
+				'listid' => $listid,
+				'emailaddress' => $emailaddress,
+				'mobileNumber' => $mobileNumber,
+				'mobilePrefix' => $mobilePrefix,
 				'fieldid' => $fieldid,
 				'fieldValueOTM' => $fieldValueOTM,
 				'path' => $path
 		);
-		
-		return $this->MakePostRequest($url, $params);
-	}
 	
 	public function RemoveOTMDocument ($subscriberid = 0, $fieldid = 0, $path = "", $index = 0)
 	{
