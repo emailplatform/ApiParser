@@ -11,7 +11,7 @@ class ApiParser
 
 	/** Production **/
  	var $URL = 'https://api.mailmailmail.net/v1.1/';
-    var $URL_v2 = 'https://api.mailmailmail.net/v2.0/';
+    	var $URL_v2 = 'https://api.mailmailmail.net/v2.0/';
 
     
 	
