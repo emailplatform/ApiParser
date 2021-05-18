@@ -8,9 +8,10 @@ class ApiParser
 	const REQUEST_FAILED = 'Unsuccessful request';
 
 	var $settings = array ();
-	
-    /** Production **/
-  	var $URL = 'https://api.mailmailmail.net/v1.1/';
+
+	/** Production **/
+ 	var $URL = 'https://api.mailmailmail.net/v1.1/';
+    var $URL_v2 = 'https://api.mailmailmail.net/v2.0/';
 
     
 	
@@ -144,6 +145,31 @@ class ApiParser
 		{
 			return $error->GetMessage();
 		}
+	}
+	
+	private function MakePutRequest ($url = "", $fields = array())
+	{
+		// open connection
+		$ch = curl_init();
+		
+		$encodedData = http_build_query($fields, '', '&');
+		
+		// set the url, number of POST vars, POST data
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $this->GetHTTPHeader());
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $encodedData);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+		// disable for security
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+		
+		// execute post
+		$result = curl_exec($ch);
+		
+		// close connection
+		curl_close($ch);
+		return $this->DecodeResult($result);
 	}
 
 	private function MakeDeleteRequest ($url = "", $fields = array())
@@ -2143,18 +2169,285 @@ class ApiParser
 		return $this->MakePostRequest($url, $params);
 	}
 	
-	public function RemoveOTMDocument ($subscriberid = 0, $fieldid = 0, $path = "", $index = 0)
+	/**
+	 * CreateSubAccount
+	 * Create sub account by particular account
+	 *
+	 * @param String accountName
+	 *          Set username for your new sub account.
+	 * @param String importid
+	 *          Set password for your new sub account.
+	 * @param String importid
+	 *          Set owner email for your new sub account.
+	 * @param Array allowedDomains
+	 *          Set which domains will be able to use this sub account.
+	 *
+	 */
+	public function CreateSubAccount($accountName = "", $accountPassword = "", $ownerEmail = "", $allowedDomains = array())
 	{
-		$url = $this->URL . '/Subscribers/RemoveOTMDocument';
+		$url = $this->URL_v2 . '/Users/CreateSubAccount';
 		
 		$params = array (
-				'subscriberid' => $subscriberid,
-				'fieldid' => $fieldid,
-				'path' => $path,
-				'index' => $index
+				'accountName' => $accountName,
+				'accountPassword' => $accountPassword,
+				'ownerEmail' => $ownerEmail,
+				'allowedDomains' => $allowedDomains
+		);
+		
+		return $this->MakePostRequest($url, $params);
+	}
+	
+	/**
+	 * InheritListsToSubAccount
+	 * Inherit lists from particular account
+	 *
+	 * @param String accountName
+	 *          Set sub account name that you want to inherit lists.
+	 * @param Array inheritLists
+	 *          Set lists which need to be inherited.
+	 *
+	 */
+	public function InheritListsToSubAccount($accountName = "", $inheritLists = array())
+	{
+		$url = $this->URL_v2 . '/Users/InheritListsToSubAccount';
+		
+		$params = array (
+				'accountName' => $accountName,
+				'inheritLists' => $inheritLists
+		);
+		
+		return $this->MakePutRequest($url, $params);
+	}
+	
+	/**
+	 * InheritSegmentsToSubAccount
+	 * Inherit segments from particular account
+	 *
+	 * @param String accountName
+	 *          Set sub account name that you want to inherit segments.
+	 * @param Array inheritSegments
+	 *          Set segments which need to be inherited.
+	 *
+	 */
+	public function InheritSegmentsToSubAccount($accountName = "", $inheritSegments = array())
+	{
+		$url = $this->URL_v2 . '/Users/InheritSegmentsToSubAccount';
+		
+		$params = array (
+				'accountName' => $accountName,
+				'inheritSegments' => $inheritSegments
+		);
+		
+		return $this->MakePutRequest($url, $params);
+	}
+	
+	/**
+	 * InheritNewslettersToSubAccount
+	 * Inherit newsletters from particular account
+	 *
+	 * @param String accountName
+	 *          Set sub account name that you want to inherit newsletter.
+	 * @param int newsletterid
+	 *          Newsletter ID that will be inherited.
+	 * @param string recipientsType
+	 *          Choose recipients type. Available options "list" and "segment".
+	 * @param array recipientsid
+	 *          Specify list or segment ids you want to link with inherited newsletter.
+	 *
+	 */
+	public function InheritNewsletterToSubAccount($accountName = "", $newsletterid = 0, $recipientsType = "", $recipientsid = array())
+	{
+		$url = $this->URL_v2 . '/Users/InheritNewsletterToSubAccount';
+		
+		$params = array (
+				'accountName' => $accountName,
+				'newsletterid' => $newsletterid,
+				'recipientsType' => $recipientsType,
+				'recipientsid' => $recipientsid
+		);
+		
+		return $this->MakePutRequest($url, $params);
+	}
+	
+	/**
+	 * GetSubAccounts
+	 * Get sub accounts for particular user.
+	 *
+	 * @param Int limit
+	 * 			Number of records you want to fetch.
+	 * @param Int offset
+	 * 			From where to start.
+	 */
+	public function GetSubAccounts(int $limit = 10, int $offset = 0)
+	{
+		$url = $this->URL_v2 . '/Users/GetSubAccounts';
+		
+		$params = array (
+				'limit' => $limit,
+				'offset' => $offset
+		);
+		
+		return $this->MakeGetRequest($url, $params);
+	}
+	
+	/**
+	 * GetInheritedLists
+	 * Get inherit lists for particular user.
+	 *
+	 ** @param Int subAccountId
+	 * 			Id of sub account to fetch data
+	 * @param Int limit
+	 * 			Number of records you want to fetch.
+	 * @param Int offset
+	 * 			From where to start.
+	 */
+	public function GetInheritedLists(string $accountName = "", int $limit = 10, int $offset = 0)
+	{
+		$url = $this->URL_v2 . '/Users/GetInheritedLists';
+		
+		$params = array (
+				'accountName' => $accountName,
+				'limit' => $limit,
+				'offset' => $offset
+		);
+		
+		return $this->MakeGetRequest($url, $params);
+	}
+	
+	/**
+	 * GetInheritedCampaigns
+	 * Get inherit campaigns for particular user.
+	 *
+	 ** @param Int subAccountId
+	 * 			Id of sub account to fetch data
+	 * @param Int limit
+	 * 			Number of records you want to fetch.
+	 * @param Int offset
+	 * 			From where to start.
+	 */
+	public function GetInheritedNewsletters(string $accountName = "", int $limit = 10, int $offset = 0)
+	{
+		$url = $this->URL_v2 . '/Users/GetInheritedNewsletters';
+		
+		$params = array (
+				'accountName' => $accountName,
+				'limit' => $limit,
+				'offset' => $offset
+		);
+		
+		return $this->MakeGetRequest($url, $params);
+	}
+	
+	/**
+	 * GetInheritedSegments
+	 * Get inherit segments for particular user.
+	 *
+	 ** @param Int subAccountId
+	 * 			Id of sub account to fetch data
+	 * @param Int limit
+	 * 			Number of records you want to fetch.
+	 * @param Int offset
+	 * 			From where to start.
+	 */
+	public function GetInheritedSegments(string $accountName = "", int $limit = 10, int $offset = 0)
+	{
+		$url = $this->URL_v2 . '/Users/GetInheritedSegments';
+		
+		$params = array (
+				'accountName' => $accountName,
+				'limit' => $limit,
+				'offset' => $offset
+		);
+		
+		return $this->MakeGetRequest($url, $params);
+	}
+	
+	/**
+	 * RemoveInheritedList
+	 * Delete a inherit list for sub account.
+	 *
+	 * @param Int subAccountId
+	 * 			Id of sub account to delete the list
+	 * @param Int listid
+	 *        	list id to delete
+	 *
+	 */
+	public function RemoveInheritedList(string $accountName = "", int $listid = 0)
+	{
+		$url = $this->URL_v2 . '/Users/RemoveInheritedList';
+		
+		$params = array (
+				'accountName' => $accountName,
+				'listid' => $listid
 		);
 		
 		return $this->MakeDeleteRequest($url, $params);
+	}
+	
+	/**
+	 * RemoveInheritedSegment
+	 * Delete a inherit segment for sub account.
+	 *
+	 * @param Int subAccountId
+	 * 			Id of sub account to delete the list
+	 * @param Int listid
+	 *        	list id to delete
+	 *
+	 */
+	public function RemoveInheritedSegment(string $accountName = "", int $segmentid = 0)
+	{
+		$url = $this->URL_v2 . '/Users/RemoveInheritedSegment';
+		
+		$params = array (
+				'accountName' => $accountName,
+				'segmentid' => $segmentid
+		);
+		
+		return $this->MakeDeleteRequest($url, $params);
+	}
+	
+	/**
+	 * RemoveInheritedCampaign
+	 * Delete a inherit campaign for sub account.
+	 *
+	 * @param Int subAccountId
+	 * 			Id of sub account to delete the list
+	 * @param Int listid
+	 *        	list id to delete
+	 *
+	 */
+	public function RemoveInheritedNewsletter(string $accountName = "", int $newsletterid = 0)
+	{
+		$url = $this->URL_v2 . '/Users/RemoveInheritedNewsletter';
+		
+		$params = array (
+				'accountName' => $accountName,
+				'newsletterid' => $newsletterid
+		);
+		
+		return $this->MakeDeleteRequest($url, $params);
+	}
+	
+	/**
+	 * SetSubAccountStatus
+	 * Change status for sub account
+	 *
+	 * @param Int subAccountId
+	 *          Id of trigger
+	 * @param Boolean status
+	 *         New status for sub account
+	 *
+	 */
+	public function SetSubAccountStatus(string $accountName = "", bool $status = false)
+	{
+		$url = $this->URL_v2 . '/Users/SetSubAccountStatus';
+		
+		$params = array (
+				'accountName' => $accountName,
+				'status' => $status
+		);
+		
+		return $this->MakePutRequest($url, $params);
 	}
 }
 
