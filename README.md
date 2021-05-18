@@ -45,6 +45,82 @@ print_r($result);
 
 ## Changelog:
 
+### _Differences between **v1.2.17** and **v1.2.19**_ 
+#### New method:
+
+* **CreateSubAccount**
+> ```php
+> public function CreateSubAccount($accountName = "", $accountPassword = "", $ownerEmail = "", $allowedDomains = array())
+>```
+<br>
+
+* **InheritListsToSubAccount**
+> ```php
+> public function InheritListsToSubAccount($accountName = "", $inheritLists = array())
+>```
+<br>
+
+* **InheritSegmentsToSubAccount**
+> ```php
+> public function InheritSegmentsToSubAccount($accountName = "", $inheritSegments = array())
+>```
+<br>
+
+* **InheritNewsletterToSubAccount**
+> ```php
+> public function InheritNewsletterToSubAccount($accountName = "", $newsletterid = 0, $recipientsType = "", $recipientsid = array())
+>```
+<br>
+
+* **GetSubAccounts**
+> ```php
+> public function GetSubAccounts(int $limit = 10, int $offset = 0)
+>```
+<br>
+
+* **GetInheritedLists**
+> ```php
+> public function GetInheritedLists(string $accountName = "", int $limit = 10, int $offset = 0)
+>```
+<br>
+
+* **GetInheritedNewsletters**
+> ```php
+> public function GetInheritedNewsletters(string $accountName = "", int $limit = 10, int $offset = 0)
+>```
+<br>
+
+* **GetInheritedSegments**
+> ```php
+> public function GetInheritedSegments(string $accountName = "", int $limit = 10, int $offset = 0)
+>```
+<br>
+
+* **RemoveInheritedList**
+> ```php
+> public function RemoveInheritedList(string $accountName = "", int $listid = 0)
+>```
+<br>
+
+* **RemoveInheritedSegment**
+> ```php
+> public function RemoveInheritedSegment(string $accountName = "", int $segmentid = 0)
+>```
+<br>
+
+* **RemoveInheritedNewsletter**
+> ```php
+> public function RemoveInheritedNewsletter(string $accountName = "", int $newsletterid = 0)
+>```
+<br>
+
+* **SetSubAccountStatus**
+> ```php
+> public function SetSubAccountStatus(string $accountName = "", bool $status = false)
+>```
+<br>
+
+
 ### _Differences between **v1.2.16** and **v1.2.17**_ 
 #### Method definition changed:
 
