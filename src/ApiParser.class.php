@@ -2139,9 +2139,6 @@ class ApiParser
 				'fieldValueOTM' => $fieldValueOTM,
 				'path' => $path
 		);
-		
-		return $this->MakePostRequest($url, $params);
-	}
 	
 	public function RemoveOTMDocument ($subscriberid = 0, $fieldid = 0, $path = "", $index = 0)
 	{
