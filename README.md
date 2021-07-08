@@ -51,12 +51,12 @@ print_r($result);
 >  *Previous:
 
 > ```php
-public function ScheduleSendSMS($campaignid = false, $lists = false, $hours = false)
+> public function ScheduleSendSMS($campaignid = false, $lists = false, $hours = false)
 >```
 
 >  *Now:*
 > ```php
-public function ScheduleSendSMS($campaignid = false, $hours = false)
+> public function ScheduleSendSMS($campaignid = false, $hours = false)
 >```
 
 ### _Differences between **v1.2.16** and **v1.2.17**_ 
