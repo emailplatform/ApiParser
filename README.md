@@ -45,6 +45,20 @@ print_r($result);
 
 ## Changelog:
 
+### _Differences between **v1.2.19** and **v1.2.21**_
+#### Method definition changed:
+* **ScheduleSendSMS**
+>  *Previous:
+
+> ```php
+public function ScheduleSendSMS($campaignid = false, $lists = false, $hours = false)
+>```
+
+>  *Now:*
+> ```php
+public function ScheduleSendSMS($campaignid = false, $hours = false)
+>```
+
 ### _Differences between **v1.2.16** and **v1.2.17**_ 
 #### Method definition changed:
 
