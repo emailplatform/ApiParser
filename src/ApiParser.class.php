@@ -721,46 +721,6 @@ class ApiParser
 	}
 	
 	/**
-	 * SendSMS
-	 * 		Attempts to send a sms to specific subscriber or seeks for subscriber with given mobile number
-	 * @param string $subject for the sms
-	 * @param string $text for the sms
-	 * @param number $subscriberid [optional] recipient subscriber's ID, $subscriberid or $mobile and $listid required
-	 * @param number $listid [optional] recipient list ID, $listid and $mobile or $subscriberid required
-	 * @param string $mobile [optional] recipient mobile number $listid and $mobile or $subscriberid required
-	 * @param string $mobilePrefix [optional] recipient mobile prefix $listid and $mobile or $subscriberid required
-	 * @param string $country country of sending for which there are credits
-	 * @return boolean True if newsletter was sent, False otherwise
-	 */
-	public function SendSMS($campaignid = 0, $subject = '', $text = '', $subscriberid = 0, $listid = 0, $mobile = '', $mobilePrefix = '')
-	{
-		$campaignid = intval($campaignid);
-		$subscriberid = intval($subscriberid);
-		$subject = trim($subject);
-		$text = trim($text);
-		$listid = intval($listid);
-		$mobile = trim($mobile);
-		$mobilePrefix = trim($mobilePrefix);
-		
-		$url = $this->URL . '/SMS/Send';
-		
-		if(($campaignid || ($subject && $text)) && ($subscriberid || ($listid && $mobile && $mobilePrefix)))
-		{
-			$data = array(
-					'campaignid' => $campaignid,
-					'subject' => $subject,
-					'text' => $text,
-					'subscriberid' => $subscriberid,
-					'listid' => $listid,
-					'mobile' => $mobile,
-					'mobilePrefix' => $mobilePrefix
-			);
-			return $this->MakePostRequest($url, $data);
-		}
-		return self::REQUEST_FAILED;
-	}
-	
-	/**
 	 * GetSubscribers
 	 * Returns a list of subscriber id's based on the information passed in.
 	 * 
@@ -1442,21 +1402,18 @@ class ApiParser
 	 * @param Float $hours
 	 * 			When should the campaign start
 	 * 			(In how many hours from a starting point(real time : now)).
-	 * @param Array $lists
-	 * 			Which lists to send.
 	 * 
 	 * @return Array Returns an array of status (whether the copy worked or not)
 	 *         and a message to go with it. If the copy worked, then the message
 	 *         is 'false'.
 	 */
-	public function ScheduleSendSMS($campaignid = false, $lists = false, $hours = false)
+	public function ScheduleSendSMS($campaignid = false, $hours = false)
 	{
 		$url = $this->URL . '/SMSSends/ScheduleSend';
-		if($campaignid && !empty($lists))
+		if($campaignid)
 		{
 			$params = array(
 					'campaignid' => $campaignid,
-					'lists' => $lists,
 					'hours' => $hours
 			);
 			return $this->MakePostRequest($url, $params);
