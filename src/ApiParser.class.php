@@ -8,17 +8,17 @@ class ApiParser
 	const REQUEST_FAILED = 'Unsuccessful request';
 
 	var $settings = array ();
-	
 
 	/** Production **/
-  	var $URL = 'https://api.mailmailmail.net/v1.1';
+ 	var $URL = 'https://api.mailmailmail.net/v1.1/';
+    
 	
 	public function __construct ($settings = array())
 	{
 		$this->settings = $settings;
 	}
 
-	private function GetHTTPHeader ()
+	protected function GetHTTPHeader ()
 	{
 		switch($this->settings["format"])
 		{
@@ -144,6 +144,31 @@ class ApiParser
 			return $error->GetMessage();
 		}
 	}
+	
+	private function MakePutRequest ($url = "", $fields = array())
+	{
+		// open connection
+		$ch = curl_init();
+		
+		$encodedData = http_build_query($fields, '', '&');
+		
+		// set the url, number of POST vars, POST data
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $this->GetHTTPHeader());
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $encodedData);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+		// disable for security
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+		
+		// execute post
+		$result = curl_exec($ch);
+		
+		// close connection
+		curl_close($ch);
+		return $this->DecodeResult($result);
+	}
 
 	private function MakeDeleteRequest ($url = "", $fields = array())
 	{
@@ -259,6 +284,23 @@ class ApiParser
 					"activeonly" => $activeonly,
 					"not_bounced" => $not_bounced,
 					"return_listid" => $return_listid
+			);
+			return $this->MakeGetRequest($url, $params);
+		}
+		return self::REQUEST_FAILED;
+	}
+	
+	public function IsSubscriberOnSegment ($segmentid = false, $subscriberid = false, $emailaddress = false)
+	{
+		$url = $this->URL . "/Subscribers/IsSubscriberOnSegment";
+		$emailaddress = trim($emailaddress);
+		if($segmentid && ($emailaddress || $subscriberid))
+		{
+			
+			$params = array (
+					"segmentid" => $segmentid,
+					"subscriberid" => $subscriberid,
+					"emailaddress" => $emailaddress
 			);
 			return $this->MakeGetRequest($url, $params);
 		}
@@ -456,7 +498,7 @@ class ApiParser
 		return self::REQUEST_FAILED;
 	}
 	
-	public function ResubscribeContact($listid = false, $emailaddress = false, $mobileNumber = false, $mobilePrefix = false, $add_to_autoresponders = false)
+	public function ResubscribeContact($listid = false, $emailaddress = false, $mobileNumber = false, $mobilePrefix = false, $add_to_autoresponders = false, $contactFields = array())
 	{
 		$url = $this->URL . '/Subscribers/ResubscribeContact';
 		if($listid && ($emailaddress || ($mobileNumber && $mobilePrefix)))
@@ -466,7 +508,8 @@ class ApiParser
 					'emailaddress' => $emailaddress,
 					'mobileNumber' => $mobileNumber,
 					'mobilePrefix' => $mobilePrefix,
-					'add_to_autoresponders' => $add_to_autoresponders
+					'add_to_autoresponders' => $add_to_autoresponders,
+					'contactFields' => $contactFields
 			);
 			return $this->MakePostRequest($url, $params);
 		}
@@ -518,6 +561,8 @@ class ApiParser
 		}
 		return self::REQUEST_FAILED;
 	}
+	
+	
 	
 	/**
 	 * UpdateList
@@ -573,6 +618,21 @@ class ApiParser
 		return self::REQUEST_FAILED;
 	}
 	
+	public function CreateSegment($name = "", $rules = array(), $connector = 'and')
+	{
+	    $url = $this->URL . '/Segments/CreateSegment';
+	    if(!empty($name) && !empty($rules) && !empty($connector))
+	    {
+	        $params = array(
+	            'name' => $name,
+	            'rules' => $rules,
+	            'connector' => $connector
+	        );
+	        return $this->MakePostRequest($url, $params);
+	    }
+	    return self::REQUEST_FAILED;
+	}
+	
 	/**
 	 * CreateCustomField
 	 * Create new custom field
@@ -613,14 +673,11 @@ class ApiParser
 	public function GetCustomFields($listids = false)
 	{
 		$url = $this->URL . '/Lists/GetCustomFields';
-		if(!empty($listids))
-		{
-			$params = array (
-					'listids' => $listids
-			);
-			return $this->MakeGetRequest($url, $params);
-		}
-		return self::REQUEST_FAILED;
+		
+		$params = array (
+				'listids' => $listids
+		);
+		return $this->MakeGetRequest($url, $params);
 	}
 	
 	/**
@@ -634,7 +691,7 @@ class ApiParser
 	 * @param string $replyEmail [optional] reply to email, replying will be use this email
 	 * @return boolean True if newsletter was sent, False otherwise
 	 */
-	public function SendNewsletter($newsletterid = 0, $subscriberid = 0, $email = '', $senderEmail = '', $senderName = '', $replyEmail = '')
+	public function SendNewsletter($newsletterid = 0, $subscriberid = 0, $email = '', $senderEmail = '', $senderName = '', $replyEmail = '', $callbackUrl = false, $reloadFeed = false, $notifyOwner = false)
 	{
 		$email = trim($email);
 		$subscriberid = intval($subscriberid);
@@ -647,53 +704,16 @@ class ApiParser
 		
 		if($newsletterid && ($subscriberid || $email))
 		{
-			$data = array(
+			$data = array (
 					'newsletterid' => $newsletterid,
 					'subscriberid' => $subscriberid,
 					'email' => $email,
 					'fromaddress' => $senderEmail,
 					'fromname' => $senderName,
-					'replyaddress' => $replyEmail
-			);
-			return $this->MakePostRequest($url, $data);
-		}
-		return self::REQUEST_FAILED;
-	}
-	
-	/**
-	 * SendSMS
-	 * 		Attempts to send a sms to specific subscriber or seeks for subscriber with given mobile number
-	 * @param string $subject for the sms
-	 * @param string $text for the sms
-	 * @param number $subscriberid [optional] recipient subscriber's ID, $subscriberid or $mobile and $listid required
-	 * @param number $listid [optional] recipient list ID, $listid and $mobile or $subscriberid required
-	 * @param string $mobile [optional] recipient mobile number $listid and $mobile or $subscriberid required
-	 * @param string $mobilePrefix [optional] recipient mobile prefix $listid and $mobile or $subscriberid required
-	 * @param string $country country of sending for which there are credits
-	 * @return boolean True if newsletter was sent, False otherwise
-	 */
-	public function SendSMS($campaignid = 0, $subject = '', $text = '', $subscriberid = 0, $listid = 0, $mobile = '', $mobilePrefix = '')
-	{
-		$campaignid = intval($campaignid);
-		$subscriberid = intval($subscriberid);
-		$subject = trim($subject);
-		$text = trim($text);
-		$listid = intval($listid);
-		$mobile = trim($mobile);
-		$mobilePrefix = trim($mobilePrefix);
-		
-		$url = $this->URL . '/SMS/Send';
-		
-		if(($campaignid || ($subject && $text)) && ($subscriberid || ($listid && $mobile && $mobilePrefix)))
-		{
-			$data = array(
-					'campaignid' => $campaignid,
-					'subject' => $subject,
-					'text' => $text,
-					'subscriberid' => $subscriberid,
-					'listid' => $listid,
-					'mobile' => $mobile,
-					'mobilePrefix' => $mobilePrefix
+					'replyaddress' => $replyEmail,
+					'callbackUrl' => $callbackUrl,
+					'reloadFeed' => $reloadFeed,
+					'notifyOwner' => $notifyOwner
 			);
 			return $this->MakePostRequest($url, $data);
 		}
@@ -769,7 +789,7 @@ class ApiParser
 	public function GetSubscriberDetails($listid = false, $subscriberid = false, $emailaddress = false, $mobile = false, $mobile_prefix = false)
 	{
 		$url = $this->URL . '/Subscribers/GetSubscriberDetails';
-		if(($emailaddress || $mobile || $subscriberid) && $listid)
+		if($subscriberid || ($listid && ($emailaddress || $mobile)))
 		{
 			$params = array(
 					'listid' => $listid,
@@ -1304,6 +1324,8 @@ class ApiParser
 		return self::REQUEST_FAILED;
 	}
 	
+	
+	
 	/**
 	 * ScheduleSendNewsletter
 	 * Schedule newsletter campaign for sending.
@@ -1318,14 +1340,53 @@ class ApiParser
 	 *         and a message to go with it. If the copy worked, then the message
 	 *         is 'false'.
 	 */
-	public function ScheduleSendNewsletter($campaignid = false, $hours = false)
+	public function ScheduleSendNewsletter($campaignid = false, $hours = false, $saveSnapshots = true, $reloadFeed = true, $notifyOwner = false)
 	{
 		$url = $this->URL . '/Sends/ScheduleSend';
 		if($campaignid)
 		{
 			$params = array(
 					'campaignid' => $campaignid,
-					'hours' => $hours
+					'hours' => $hours,
+					'saveSnapshots' => $saveSnapshots,
+					'reloadFeed' => $reloadFeed,
+					'notifyOwner' => $notifyOwner
+			);
+			return $this->MakePostRequest($url, $params);
+		}
+		return self::REQUEST_FAILED;
+	}
+	
+	public function ScheduleSendNewsletterToLists($newsletterid = false, $timeToSend = false, $listids = array(), $saveSnapshots = true, $reloadFeed = true, $notifyOwner = false)
+	{
+		$url = $this->URL . '/Sends/ScheduleSendNewsletterToLists';
+		if($newsletterid && !empty($listids))
+		{
+			$params = array (
+					'newsletterid' => $newsletterid,
+					'timeToSend' => $timeToSend,
+					'listids' => $listids,
+					'saveSnapshots' => $saveSnapshots,
+					'reloadFeed' => $reloadFeed,
+					'notifyOwner' => $notifyOwner
+			);
+			return $this->MakePostRequest($url, $params);
+		}
+		return self::REQUEST_FAILED;
+	}
+	
+	public function ScheduleSendNewsletterToSegments($newsletterid = false, $timeToSend = false, $segmentids = array(), $saveSnapshots = true, $reloadFeed = true, $notifyOwner = false)
+	{
+		$url = $this->URL . '/Sends/ScheduleSendNewsletterToSegments';
+		if($newsletterid && !empty($segmentids))
+		{
+			$params = array (
+					'newsletterid' => $newsletterid,
+					'timeToSend' => $timeToSend,
+					'segmentids' => $segmentids,
+					'saveSnapshots' => $saveSnapshots,
+					'reloadFeed' => $reloadFeed,
+					'notifyOwner' => $notifyOwner
 			);
 			return $this->MakePostRequest($url, $params);
 		}
@@ -1341,21 +1402,18 @@ class ApiParser
 	 * @param Float $hours
 	 * 			When should the campaign start
 	 * 			(In how many hours from a starting point(real time : now)).
-	 * @param Array $lists
-	 * 			Which lists to send.
 	 * 
 	 * @return Array Returns an array of status (whether the copy worked or not)
 	 *         and a message to go with it. If the copy worked, then the message
 	 *         is 'false'.
 	 */
-	public function ScheduleSendSMS($campaignid = false, $lists = false, $hours = false)
+	public function ScheduleSendSMS($campaignid = false, $hours = false)
 	{
 		$url = $this->URL . '/SMSSends/ScheduleSend';
-		if($campaignid && !empty($lists))
+		if($campaignid)
 		{
 			$params = array(
 					'campaignid' => $campaignid,
-					'lists' => $lists,
 					'hours' => $hours
 			);
 			return $this->MakePostRequest($url, $params);
@@ -1402,7 +1460,7 @@ class ApiParser
 	 *        
 	 * @return Array Returns an array of the statistics
 	 */
-	public function GetListSummary ($listid = false, $limit = 100, $offset = 0)
+	public function GetListSummary ($listid = false, $limit = 10, $offset = 0)
 	{
 		$url = $this->URL . '/Stats/GetListSummary';
 		if($listid)
@@ -1460,6 +1518,33 @@ class ApiParser
 		return self::REQUEST_FAILED;
 	}
 	
+	public function GetTriggers($listid = false, $limit = 1000, $offset = 0)
+	{
+	    $url = $this->URL . '/Triggers/GetTriggers';
+	    
+	    $params = array(
+	        'listid' => $listid,
+	        'limit' => $limit,
+	        'offset' => $offset
+	    );
+	    
+	    return $this->MakeGetRequest($url, $params);
+	}
+	
+	public function GetSegments($listid = false, $count_subscribers = false, $limit = 100, $offset = 0)
+	{
+	    $url = $this->URL . '/Segments/GetSegments';
+	    
+	    $params = array(
+	        'listid' => $listid,
+	        'count_subscribers' => $count_subscribers,
+	        'limit' => $limit,
+	        'offset' => $offset
+	    );
+	    
+	    return $this->MakeGetRequest($url, $params);
+	}
+	
 	public function ViewNewsletter($newsletterid)
 	{
 		$url = $this->URL . '/Newsletters/ViewNewsletter';
@@ -1503,6 +1588,22 @@ class ApiParser
 			return $this->MakeGetRequest($url, $params);
 		}
 		return self::REQUEST_FAILED;
+	}
+	
+	public function GetNewsletterSummary($newsletterid = false, $statid = false, $from = false, $to = false)
+	{
+	    $url = $this->URL . '/Stats/GetNewsletterSummary';
+	    if($newsletterid)
+	    {
+			$params = array (
+					'newsletterid' => $newsletterid,
+					'statid' => $statid,
+					'from' => $from,
+					'to' => $to
+			);
+			return $this->MakeGetRequest($url, $params);
+		}
+	    return self::REQUEST_FAILED;
 	}
 	
 	public function GetRulesForSegment($segmentid = false)
@@ -1592,7 +1693,7 @@ class ApiParser
 		return self::REQUEST_FAILED;
 	}
 	
-    public function AddToOTMDocument ($listid = false, $subscriberid = false, $emailaddress = false, $mobile = false, $mobilePrefix = false, $fieldid = false, 
+	public function AddToOTMDocument ($listid = false, $subscriberid = false, $emailaddress = false, $mobile = false, $mobilePrefix = false, $fieldid = false, 
 	                                  $values = array(), $path = false)
 	{
 		$url = $this->URL . '/Subscribers/AddToOTMDocument';
@@ -1613,5 +1714,415 @@ class ApiParser
 		return self::REQUEST_FAILED;
 	}
 	
+	public function GetSnapshots($subscriberid = false, $triggerid = false, $autoresponderid = false, $campaignid = false, $groupby = "date")
+	{
+	    $url = $this->URL . '/Stats/GetSnapshots';
+	    if($subscriberid)
+	    {
+	        $params = array(
+	            'subscriberid' => $subscriberid,
+	            'triggerid' => $triggerid,
+	            'autoresponderid' => $autoresponderid,
+	            'campaignid' => $campaignid,
+	            'groupby' => $groupby
+	        );
+	        return $this->MakeGetRequest($url, $params);
+	    }
+	    return self::REQUEST_FAILED;
+	}
+	
+	
+	public function GetStatids($listid = false, $segmentid = false, $newsletterid = false, $from = false, $to = false, $limit = 100, $offset = 0)
+	{
+	    $url = $this->URL . '/Stats/GetStatids';
+	    if($listid || $segmentid || $newsletterid)
+	    {
+	        $params = array(
+	            'listid' => $listid,
+	            'segmentid' => $segmentid,
+	            'newsletterid' => $newsletterid,
+	            'from' => $from,
+	            'to' => $to,
+	            'limit' => $limit,
+	            'offset' => $offset
+	        );
+	        return $this->MakeGetRequest($url, $params);
+	    }
+	    return self::REQUEST_FAILED;
+	}
+	
+	public function GetLeadScore($subscriberid = false)
+	{
+		$url = $this->URL . '/Subscribers/GetLeadScore';
+		if($subscriberid)
+		{
+			$params = array (
+					'subscriberid' => $subscriberid
+			);
+			return $this->MakeGetRequest($url, $params);
+		}
+		return self::REQUEST_FAILED;
+	}
+	
+	public function SetLeadScore($subscriberid = false, $leadScore = false, $type = "add")
+	{
+		$url = $this->URL . '/Subscribers/SetLeadScore';
+		if($subscriberid && $leadScore !== false)
+		{
+			$params = array (
+					'subscriberid' => $subscriberid,
+					'leadScore' => $leadScore,
+					'type' => $type
+			);
+			return $this->MakePostRequest($url, $params);
+		}
+		return self::REQUEST_FAILED;
+	}
+	
+	public function GetTrackingEvents($listid = false, $subscriberid = false, $limit = 100, $offset = 0)
+	{
+		$url = $this->URL . '/Subscribers/GetTrackingEvents';
+		if($subscriberid && $listid)
+		{
+			$params = array(
+					'listid' => $listid,
+					'subscriberid' => $subscriberid,
+					'limit' => $limit,
+					'offset' => $offset
+			);
+			return $this->MakeGetRequest($url, $params);
+		}
+		return self::REQUEST_FAILED;
+	}
+	
+	/**
+	 * GetSentEmailCampaignEvents
+	 * Fetch events for sent campaigns based on user.
+	 *
+	 * @param String $from
+	 *        	Event date.
+	 * @param String $to
+	 * 			Event date.
+	 * @param Integer $limit
+	 * 			How many events to fetch with single request.
+	 *
+	 * @return Array Returns an array of events for all sent campaigns between $form & $to.
+	 */
+	public function GetSentEmailCampaignEvents ($from = false, $to = false, $limit = 10, $offset = 0)
+	{
+		$url = $this->URL . '/Events/GetSentEmailCampaignEvents';
+		if(!empty($from))
+		{
+			$params = array(
+					'from' => $from,
+					'to' => $to,
+					'limit' => $limit,
+					'offset' => $offset
+			);
+			return $this->MakeGetRequest($url, $params);
+		}
+		return self::REQUEST_FAILED;
+	}
+	
+	/**
+	 * GetSentEmailCampaignWithTriggerEvents
+	 * Fetch events for sent campaigns with trigger based on user.
+	 *
+	 * @param String $from
+	 *        	Event date.
+	 * @param String $to
+	 * 			Event date.
+	 * @param Integer $limit
+	 * 			How many events to fetch with single request.
+	 *
+	 * @return Array Returns an array of events for all sent campaigns between $form & $to.
+	 */
+	public function GetSentEmailCampaignWithTriggerEvents ($from = false, $to = false, $limit = 10, $offset = 0)
+	{
+		$url = $this->URL . '/Events/GetSentEmailCampaignWithTriggerEvents';
+		if(!empty($from))
+		{
+			$params = array(
+					'from' => $from,
+					'to' => $to,
+					'limit' => $limit,
+					'offset' => $offset
+			);
+			return $this->MakeGetRequest($url, $params);
+		}
+		return self::REQUEST_FAILED;
+	}
+	
+	
+	/**
+	 * GetOpenCampaignEvents
+	 * Fetch events for open campaigns based on user.
+	 *
+	 * @param String $from
+	 *        	Event date.
+	 * @param String $to
+	 * 			Event date.
+	 * @param Integer $limit
+	 * 			How many events to fetch with single request.
+	 *
+	 * @return Array Returns an array of events for all opened campaigns between $form & $to.
+	 */
+	public function GetOpenCampaignEvents ($from = false, $to = false, $limit = 10, $offset = 0)
+	{
+		$url = $this->URL . '/Events/GetOpenCampaignEvents';
+		if(!empty($from))
+		{
+			$params = array(
+					'from' => $from,
+					'to' => $to,
+					'limit' => $limit,
+					'offset' => $offset
+			);
+			return $this->MakeGetRequest($url, $params);
+		}
+		return self::REQUEST_FAILED;
+	}
+	
+	
+	/**
+	 * GetOpenTriggersEvents
+	 * Fetch events for open campaigns sent with trigger based on user.
+	 *
+	 * @param String $from
+	 *        	Event date.
+	 * @param String $to
+	 * 			Event date.
+	 * @param Integer $limit
+	 * 			How many events to fetch with single request.
+	 *
+	 * @return Array Returns an array of events for all opened campaigns sent with trigger between $form & $to.
+	 */
+	public function GetOpenTriggersEvents ($from = false, $to = false, $limit = 10, $offset = 0)
+	{
+		$url = $this->URL . '/Events/GetOpenTriggersEvents';
+		if(!empty($from))
+		{
+			$params = array(
+					'from' => $from,
+					'to' => $to,
+					'limit' => $limit,
+					'offset' => $offset
+			);
+			return $this->MakeGetRequest($url, $params);
+		}
+		return self::REQUEST_FAILED;
+	}
+
+	
+	/**
+	 * GetLinkClickCampaignEvents
+	 * Fetch events for link click in campaigns based on user.
+	 *
+	 * @param String $from
+	 *        	Event date.
+	 * @param String $to
+	 * 			Event date.
+	 * @param Integer $limit
+	 * 			How many events to fetch with single request.
+	 *
+	 * @return Array Returns an array of events for all clicked links in campaigns between $form & $to.
+	 */
+	public function GetLinkClickCampaignEvents ($from = false, $to = false, $limit = 10, $offset = 0)
+	{
+		$url = $this->URL . '/Events/GetLinkClickCampaignEvents';
+		if(!empty($from))
+		{
+			$params = array(
+					'from' => $from,
+					'to' => $to,
+					'limit' => $limit,
+					'offset' => $offset
+			);
+			return $this->MakeGetRequest($url, $params);
+		}
+		return self::REQUEST_FAILED;
+	}
+	
+	
+	/**
+	 * GetLinkClickTriggerEvents
+	 * Fetch events for link click in campaigns sent with trigger based on user.
+	 *
+	 * @param String $from
+	 *        	Event date.
+	 * @param String $to
+	 * 			Event date.
+	 * @param Integer $limit
+	 * 			How many events to fetch with single request.
+	 *
+	 * @return Array Returns an array of events for all clicked links in campaigns sent with trigger between $form & $to.
+	 */
+	public function GetLinkClickTriggerEvents ($from = false, $to = false, $limit = 10, $offset = 0)
+	{
+		$url = $this->URL . '/Events/GetLinkClickTriggerEvents';
+		if(!empty($from))
+		{
+			$params = array(
+					'from' => $from,
+					'to' => $to,
+					'limit' => $limit,
+					'offset' => $offset
+			);
+			return $this->MakeGetRequest($url, $params);
+		}
+		return self::REQUEST_FAILED;
+	}
+	
+	
+	/**
+	 * GetSentAutoresponderEvents
+	 * Fetch events for sent autoresponders based on user.
+	 *
+	 * @param String $from
+	 *        	Event date.
+	 * @param String $to
+	 * 			Event date.
+	 * @param Integer $limit
+	 * 			How many events to fetch with single request.
+	 *
+	 * @return Array Returns an array of events for all sent autoresponders between $form & $to.
+	 */
+	public function GetSentAutoresponderEvents ($from = false, $to = false, $limit = 10, $offset = 0)
+	{
+		$url = $this->URL . '/Events/GetSentAutoresponderEvents';
+		if(!empty($from))
+		{
+			$params = array(
+					'from' => $from,
+					'to' => $to,
+					'limit' => $limit,
+					'offset' => $offset
+			);
+			return $this->MakeGetRequest($url, $params);
+		}
+		return self::REQUEST_FAILED;
+	}
+	
+	/**
+	 * GetOpenAutoresponderEvents
+	 * Fetch events for opened autoresponders based on user.
+	 *
+	 * @param String $from
+	 *        	Event date.
+	 * @param String $to
+	 * 			Event date.
+	 * @param Integer $limit
+	 * 			How many events to fetch with single request.
+	 *
+	 * @return Array Returns an array of events for all opened autoresponders between $form & $to.
+	 */
+	public function GetOpenAutoresponderEvents ($from = false, $to = false, $limit = 10, $offset = 0)
+	{
+		$url = $this->URL . '/Events/GetOpenAutoresponderEvents';
+		if(!empty($from))
+		{
+			$params = array(
+					'from' => $from,
+					'to' => $to,
+					'limit' => $limit,
+					'offset' => $offset
+			);
+			return $this->MakeGetRequest($url, $params);
+		}
+		return self::REQUEST_FAILED;
+	}
+	
+	/**
+	 * GetLinkClickAutoresponderEvents
+	 * Fetch events for link click in autoresponders based on user.
+	 *
+	 * @param String $from
+	 *        	Event date.
+	 * @param String $to
+	 * 			Event date.
+	 * @param Integer $limit
+	 * 			How many events to fetch with single request.
+	 *
+	 * @return Array Returns an array of events for all clicked links in campaigns between $form & $to.
+	 */
+	public function GetLinkClickAutoresponderEvents ($from = false, $to = false, $limit = 10, $offset = 0)
+	{
+		$url = $this->URL . '/Events/GetLinkClickAutoresponderEvents';
+		if(!empty($from))
+		{
+			$params = array(
+					'from' => $from,
+					'to' => $to,
+					'limit' => $limit,
+					'offset' => $offset
+			);
+			return $this->MakeGetRequest($url, $params);
+		}
+		return self::REQUEST_FAILED;
+	}
+	
+	/**
+	 * GetSentSMSCampaignEvents
+	 * Fetch events for sent SMS campaigns based on user.
+	 *
+	 * @param String $from
+	 *        	Event date.
+	 * @param String $to
+	 * 			Event date.
+	 * @param Integer $limit
+	 * 			How many events to fetch with single request.
+	 *
+	 * @return Array Returns an array of events for all sent SMS campaigns between $form & $to.
+	 */
+	public function GetSentSMSCampaignEvents ($from = false, $to = false, $limit = 10, $offset = 0)
+	{
+		$url = $this->URL . '/Events/GetSentSMSCampaignEvents';
+		if(!empty($from))
+		{
+			$params = array(
+					'from' => $from,
+					'to' => $to,
+					'limit' => $limit,
+					'offset' => $offset
+			);
+			return $this->MakeGetRequest($url, $params);
+		}
+		return self::REQUEST_FAILED;
+	}
+	
+	public function AddCustomFieldsToList($listid = false, $customFields = array())
+	{
+	    $url = $this->URL . '/Lists/AddCustomFieldsToList';
+	    
+	    if($listid && !empty($customFields))
+	 	{
+	 	    $params = array (
+	 	        'listid' => $listid,
+	 	        'customFields' => $customFields
+	 	    );
+	 	    return $this->MakePostRequest($url, $params);
+	    }
+	    
+	    return self::REQUEST_FAILED;
+	}
+	
+	public function UpdateOTMDocument ($subscriberid = 0, $listid = 0, $emailaddress = "", $mobileNumber = "", $mobilePrefix = "", $fieldid = 0, $fieldValueOTM = array(), $path = "")
+	{
+		$url = $this->URL . '/Subscribers/UpdateOTMDocument';
+		
+		$params = array (
+				'subscriberid' => $subscriberid,
+				'listid' => $listid,
+				'emailaddress' => $emailaddress,
+				'mobileNumber' => $mobileNumber,
+				'mobilePrefix' => $mobilePrefix,
+				'fieldid' => $fieldid,
+				'fieldValueOTM' => $fieldValueOTM,
+				'path' => $path
+		);
+		
+		return $this->MakePostRequest($url, $params);
+	}
 	
 }
+
