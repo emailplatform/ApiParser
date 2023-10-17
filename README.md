@@ -39,7 +39,8 @@ $parser->GetSubscribersByCustomField($listid, $data, $activeonly, $countonly, $l
 <hr><br/>
 
 ## Changelog:
-### _Differences between **v1.1.11** and **v1.2.1**_ 
+
+### _Differences between **v1.2.1** and **v1.2.2**_ 
 #### New methods:
 
 * **AddToOTMDocument**
@@ -47,6 +48,17 @@ $parser->GetSubscribersByCustomField($listid, $data, $activeonly, $countonly, $l
 > ```php
 > public function AddToOTMDocument ($listid = false, $subscriberid = false, $emailaddress = false, $mobile = false, $mobilePrefix = false, $fieldid = false, $values = array(), $path = false)
 > 
+>```
+<br/>
+
+### _Differences between **v1.1.11** and **v1.2.1**_ 
+#### New methods:
+
+* **ChangeMobile**
+>  *Definition:*
+> ```php
+>  public function ChangeMobile($listid = false, $subscriberid = false, $mobile = false, $mobilePrefix = false)
+>  $mobile is no longer required parametar
 >```
 <br/>
 
