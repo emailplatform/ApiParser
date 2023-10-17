@@ -985,7 +985,7 @@ class ApiParser
 	public function ChangeMobile($listid = false, $subscriberid = false, $mobile = false, $mobilePrefix = false)
 	{
 	    $url = $this->URL . '/Subscribers/ChangeMobile';
-	    if($listid && $subscriberid && $mobile)
+	    if($listid && $subscriberid)
 	    {
 	        $params = array(
 	            'listid' => $listid,
