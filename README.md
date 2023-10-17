@@ -45,6 +45,17 @@ print_r($result);
 
 ## Changelog:
 
+
+### _Differences between **v1.2.21** and **v1.2.22**_
+#### Method definition changed:
+* **ChangeMobile**
+>  *Previous:
+
+>  *Now:*
+> ```php
+> $Mobile is no longer require parametars
+>```
+
 ### _Differences between **v1.2.19** and **v1.2.21**_
 #### Method definition changed:
 * **ScheduleSendSMS**
