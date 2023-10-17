@@ -32,22 +32,10 @@ $result = $parser->GetSegments($listid, $count_subscribers, $limit);
 
 ## Changelog:
 ### _Differences between **v1.2.1** and **v1.2.2**_ 
-#### New methods:
+public function ChangeMobile($listid = false, $subscriberid = false, $mobile = false, $mobilePrefix = false)
+Parameter Mobile is not longer required.
 
-* **GetTriggers**
->  *Definition:*
-> ```php
-> public function GetTriggers($listid = false, $limit = 1000, $offset = 0)
-> 
->```
-<br/>
 
-* **GetSegments**
->  *Definition:*
-> ```php
-> public function GetSegments($listid = false, $count_subscribers = false, $limit = 100, $offset = 0)
-> 
->```
 <br/>
 
 ### _Differences between **v1.1.11** and **v1.2.1**_ 
