@@ -49,11 +49,9 @@ print_r($result);
 ### _Differences between **v1.2.21** and **v1.2.22**_
 #### Method definition changed:
 * **ChangeMobile**
->  *Previous:
-
 >  *Now:*
 > ```php
-> $Mobile is no longer require parametars
+> $Mobile no longer require parameters
 >```
 
 ### _Differences between **v1.2.19** and **v1.2.21**_
