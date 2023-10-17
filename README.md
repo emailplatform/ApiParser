@@ -41,9 +41,16 @@ $result = $parser->UpdateOTMDocument($subscriberid, $listid, $emailaddress, $mob
 
 print_r($result);
 ```
-<hr><br>
+<hr
 
 ## Changelog:
+
+### _Differences between **v1.2.1** and **v1.2.2**_ 
+public function ChangeMobile($listid = false, $subscriberid = false, $mobile = false, $mobilePrefix = false)
+Parameter Mobile is not longer required.
+
+
+<br/>
 
 ### _Differences between **v1.2.16** and **v1.2.17**_ 
 #### Method definition changed:
